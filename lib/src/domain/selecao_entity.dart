@@ -11,7 +11,7 @@ class Selecao extends Equatable {
   final int gc;
   final String grupo;
 
-  Selecao({
+  const Selecao({
     required this.id,
     required this.nome,
     required this.bandeira,

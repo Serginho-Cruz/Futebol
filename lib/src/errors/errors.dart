@@ -1,10 +1,7 @@
 abstract class Failure implements Exception {}
 
-class EmptyList extends Failure {
-  String msg;
+class EmptyList extends Failure {}
 
-  EmptyList(this.msg);
+class InvalidGroupText extends Failure {}
 
-  @override
-  String toString() => msg;
-}
+class DataSourceError extends Failure {}

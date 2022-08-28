@@ -4,6 +4,6 @@ import 'package:futebol/src/domain/selecao_entity.dart';
 import '../../errors/errors.dart';
 
 abstract class IRepository {
-  Either<Failure, List<Selecao>> getAllSelecoes();
-  Either<Failure, List<Selecao>> getSelecoesByGroup();
+  Future<Either<Failure, List<Selecao>>> getAllSelecoes();
+  Future<Either<Failure, List<Selecao>>> getSelecoesByGroup(String group);
 }
