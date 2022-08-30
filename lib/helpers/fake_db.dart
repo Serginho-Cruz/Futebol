@@ -19,7 +19,7 @@ class FakeDB {
   }
 
   Future<List<Map<String, dynamic>>> getByGroup(String group) async {
-    List<Map<String, dynamic>> list = List.empty();
+    List<Map<String, dynamic>> list = List.empty(growable: true);
     if (selecoes.isEmpty) {
       throw EmptyList();
     }
@@ -28,6 +28,10 @@ class FakeDB {
       if (element.grupo == group) {
         list.add(SelecaoMapper.toMap(element));
       }
+    }
+
+    if (list.isEmpty) {
+      throw EmptyList("There's no Selecoes with this group");
     }
     return list;
   }

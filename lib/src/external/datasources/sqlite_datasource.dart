@@ -2,9 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:futebol/src/domain/selecao_entity.dart';
 import 'package:futebol/src/domain/selecao_mapper.dart';
 import 'package:futebol/src/infra/datasource/datasource_interface.dart';
-import '../../helpers/fake_db.dart';
-
-import '../errors/errors.dart';
+import '../../../helpers/fake_db.dart';
+import '../../errors/errors.dart';
 
 class SQLitedatasource implements IDataSource {
   final FakeDB db;
@@ -14,7 +13,7 @@ class SQLitedatasource implements IDataSource {
   @override
   Future<Either<Failure, List<Selecao>>> getAllSelecoes() async {
     try {
-      List<Selecao> selecoes = List.empty();
+      List<Selecao> selecoes = List.empty(growable: true);
       var list = await db.getAll();
 
       for (var element in list) {
@@ -33,7 +32,7 @@ class SQLitedatasource implements IDataSource {
   @override
   Future<Either<Failure, List<Selecao>>> getSelecaoByGroup(String group) async {
     try {
-      List<Selecao> selecoes = List.empty();
+      List<Selecao> selecoes = List.empty(growable: true);
       var list = await db.getByGroup(group);
 
       if (list.isEmpty) {
