@@ -12,7 +12,7 @@ class GetSelecoesByGroup implements IGetSelecoesByGroup {
   @override
   Future<Either<Failure, List<Selecao>>> call(String group) async {
     if (group.trim().isEmpty || group.length > 1) {
-      return Left(InvalidGroupText());
+      return Left(InvalidSearchText("Invalid Group"));
     }
 
     group = group.toUpperCase();
