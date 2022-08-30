@@ -14,44 +14,20 @@ class Repository implements IRepository {
   });
   @override
   Future<Either<Failure, List<Selecao>>> getAllSelecoes() async {
-    try {
-      var list = await datasource.getAllSelecoes();
-      return Right(list);
-    } on EmptyList catch (e) {
-      return Left(e);
-    } on DataSourceError catch (e) {
-      return Left(e);
-    } on Exception catch (e) {
-      return Left(DataSourceError());
-    }
+    var list = await datasource.getAllSelecoes();
+    return list.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
   Future<Either<Failure, Selecao>> getSelecao(int id) async {
-    try {
-      var selecao = await datasource.getSelecaoById(id);
-      return Right(selecao);
-    } on SelecaoError catch (e) {
-      return Left(e);
-    } on DataSourceError catch (e) {
-      return Left(e);
-    } on Exception catch (e) {
-      return Left(DataSourceError());
-    }
+    var selecao = await datasource.getSelecaoById(id);
+    return selecao.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
   Future<Either<Failure, List<Selecao>>> getSelecoesByGroup(
       String group) async {
-    try {
-      var list = await datasource.getSelecaoByGroup(group);
-      return Right(list);
-    } on EmptyList catch (e) {
-      return Left(e);
-    } on DataSourceError catch (e) {
-      return Left(e);
-    } on Exception {
-      return Left(DataSourceError());
-    }
+    var list = await datasource.getSelecaoByGroup(group);
+    return list.fold((l) => Left(l), (r) => Right(r));
   }
 }

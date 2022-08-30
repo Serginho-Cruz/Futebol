@@ -5,7 +5,9 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:futebol/src/domain/selecao_entity.dart' as _i2;
+import 'package:dartz/dartz.dart' as _i2;
+import 'package:futebol/src/domain/selecao_entity.dart' as _i6;
+import 'package:futebol/src/errors/errors.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
 import 'repository_impl_test.dart' as _i3;
@@ -21,8 +23,8 @@ import 'repository_impl_test.dart' as _i3;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeSelecao_0 extends _i1.SmartFake implements _i2.Selecao {
-  _FakeSelecao_0(Object parent, Invocation parentInvocation)
+class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
+  _FakeEither_0(Object parent, Invocation parentInvocation)
       : super(parent, parentInvocation);
 }
 
@@ -35,19 +37,27 @@ class MockDataSourceMock extends _i1.Mock implements _i3.DataSourceMock {
   }
 
   @override
-  _i4.Future<List<_i2.Selecao>> getAllSelecoes() =>
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>> getAllSelecoes() =>
       (super.noSuchMethod(Invocation.method(#getAllSelecoes, []),
-              returnValue: _i4.Future<List<_i2.Selecao>>.value(<_i2.Selecao>[]))
-          as _i4.Future<List<_i2.Selecao>>);
+              returnValue:
+                  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>>.value(
+                      _FakeEither_0<_i5.Failure, List<_i6.Selecao>>(
+                          this, Invocation.method(#getAllSelecoes, []))))
+          as _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>>);
   @override
-  _i4.Future<List<_i2.Selecao>> getSelecaoByGroup(String? group) =>
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>> getSelecaoByGroup(
+          String? group) =>
       (super.noSuchMethod(Invocation.method(#getSelecaoByGroup, [group]),
-              returnValue: _i4.Future<List<_i2.Selecao>>.value(<_i2.Selecao>[]))
-          as _i4.Future<List<_i2.Selecao>>);
+              returnValue:
+                  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>>.value(
+                      _FakeEither_0<_i5.Failure, List<_i6.Selecao>>(this,
+                          Invocation.method(#getSelecaoByGroup, [group]))))
+          as _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>>);
   @override
-  _i4.Future<_i2.Selecao> getSelecaoById(int? id) => (super.noSuchMethod(
-          Invocation.method(#getSelecaoById, [id]),
-          returnValue: _i4.Future<_i2.Selecao>.value(
-              _FakeSelecao_0(this, Invocation.method(#getSelecaoById, [id]))))
-      as _i4.Future<_i2.Selecao>);
+  _i4.Future<_i2.Either<_i5.Failure, _i6.Selecao>> getSelecaoById(int? id) =>
+      (super.noSuchMethod(Invocation.method(#getSelecaoById, [id]),
+          returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Selecao>>.value(
+              _FakeEither_0<_i5.Failure, _i6.Selecao>(
+                  this, Invocation.method(#getSelecaoById, [id])))) as _i4
+          .Future<_i2.Either<_i5.Failure, _i6.Selecao>>);
 }
