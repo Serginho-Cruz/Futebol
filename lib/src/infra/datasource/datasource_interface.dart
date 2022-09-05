@@ -1,10 +1,7 @@
-import 'package:dartz/dartz.dart';
-
-import '../../domain/selecao_entity.dart';
-import '../../errors/errors.dart';
+import '../../domain/entities/selecao_entity.dart';
 
 abstract class IDataSource {
-  Future<Either<Failure, List<Selecao>>> getAllSelecoes();
-  Future<Either<Failure, List<Selecao>>> getSelecaoByGroup(String group);
-  Future<Either<Failure, Selecao>> getSelecaoById(int id);
+  Future<List<Selecao>> getAllSelections();
+  Future<List<Selecao>> getSelectionsByGroup(String group);
+  Future<Selecao> getSelectionById(int id);
 }

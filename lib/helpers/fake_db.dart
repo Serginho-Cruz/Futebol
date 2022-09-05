@@ -1,6 +1,7 @@
-import 'package:futebol/src/domain/selecao_entity.dart';
-import 'package:futebol/src/domain/selecao_mapper.dart';
-import 'package:futebol/src/errors/errors.dart';
+import 'package:futebol/src/domain/entities/selecao_entity.dart';
+import 'package:futebol/src/domain/entities/selecao_mapper.dart';
+import 'package:futebol/src/errors/errors_mensages_classes/errors_mensages.dart';
+import '../src/errors/errors_classes/errors_classes.dart';
 import 'selecao_factory.dart';
 
 class FakeDB {
@@ -12,7 +13,7 @@ class FakeDB {
 
   Future<List<Map<String, dynamic>>> getAll() async {
     if (selecoes.isEmpty) {
-      throw EmptyList();
+      throw EmptyList(Messages.noExistSelections);
     }
 
     return selecoes.map((e) => SelecaoMapper.toMap(e)).toList();
@@ -21,7 +22,7 @@ class FakeDB {
   Future<List<Map<String, dynamic>>> getByGroup(String group) async {
     List<Map<String, dynamic>> list = List.empty(growable: true);
     if (selecoes.isEmpty) {
-      throw EmptyList();
+      throw EmptyList(Messages.noExistSelections);
     }
 
     for (var element in selecoes) {
@@ -31,7 +32,7 @@ class FakeDB {
     }
 
     if (list.isEmpty) {
-      throw EmptyList("There's no Selecoes with this group");
+      throw EmptyList(Messages.noGroupSelections);
     }
     return list;
   }
@@ -39,7 +40,7 @@ class FakeDB {
   Future<Map<String, dynamic>> getSelecaoById(int id) async {
     Selecao? selecao;
     if (selecoes.isEmpty) {
-      throw EmptyList();
+      throw EmptyList(Messages.noExistSelections);
     }
 
     for (var element in selecoes) {
@@ -50,7 +51,7 @@ class FakeDB {
     }
 
     if (selecao == null) {
-      throw SelecaoError("Selecao Don't found");
+      throw SelectionError(Messages.noSelectionFound);
     } else {
       return SelecaoMapper.toMap(selecao);
     }

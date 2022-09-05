@@ -1,6 +1,6 @@
 import 'package:faker/faker.dart';
 
-import 'package:futebol/src/domain/selecao_entity.dart';
+import 'package:futebol/src/domain/entities/selecao_entity.dart';
 
 abstract class FakeFactory {
   static Selecao generateSelecao() {

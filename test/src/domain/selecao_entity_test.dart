@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:futebol/src/domain/selecao_entity.dart';
+import 'package:futebol/src/domain/entities/selecao_entity.dart';
 
 void main() {
   group("Selecao Entity is ok?", () {

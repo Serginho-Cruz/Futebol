@@ -2,9 +2,9 @@
 import 'package:dartz/dartz.dart';
 
 import 'package:futebol/src/data/repository/repository_interface.dart';
-import 'package:futebol/src/domain/selecao_entity.dart';
-import 'package:futebol/src/errors/errors.dart';
-
+import 'package:futebol/src/domain/entities/selecao_entity.dart';
+import 'package:futebol/src/errors/errors_mensages_classes/errors_mensages.dart';
+import '../../errors/errors_classes/errors_classes.dart';
 import '../datasource/datasource_interface.dart';
 
 class Repository implements IRepository {
@@ -13,21 +13,43 @@ class Repository implements IRepository {
     required this.datasource,
   });
   @override
-  Future<Either<Failure, List<Selecao>>> getAllSelecoes() async {
-    var list = await datasource.getAllSelecoes();
-    return list.fold((l) => Left(l), (r) => Right(r));
+  Future<Either<Failure, List<Selecao>>> getAllSelections() async {
+    try {
+      var list = await datasource.getAllSelections();
+      return Right(list);
+    } on SelectionError catch (e) {
+      return Left(e);
+    } on Exception {
+      return Left(DataSourceError(Messages.genericError));
+    }
   }
 
   @override
-  Future<Either<Failure, Selecao>> getSelecao(int id) async {
-    var selecao = await datasource.getSelecaoById(id);
-    return selecao.fold((l) => Left(l), (r) => Right(r));
+  Future<Either<Failure, Selecao>> getSelection(int id) async {
+    try {
+      var result = await datasource.getSelectionById(id);
+      return Right(result);
+    } on SelectionError catch (e) {
+      return Left(e);
+    } on DataSourceError catch (e) {
+      return Left(e);
+    } on Exception {
+      return Left(DataSourceError(Messages.genericError));
+    }
   }
 
   @override
-  Future<Either<Failure, List<Selecao>>> getSelecoesByGroup(
+  Future<Either<Failure, List<Selecao>>> getSelectionsByGroup(
       String group) async {
-    var list = await datasource.getSelecaoByGroup(group);
-    return list.fold((l) => Left(l), (r) => Right(r));
+    try {
+      var list = await datasource.getSelectionsByGroup(group);
+      return Right(list);
+    } on DataSourceError catch (e) {
+      return Left(e);
+    } on SelectionError catch (e) {
+      return Left(e);
+    } on Exception {
+      return Left(DataSourceError(Messages.genericError));
+    }
   }
 }

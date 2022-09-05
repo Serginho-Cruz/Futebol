@@ -1,12 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:futebol/helpers/selecao_factory.dart';
-import 'package:futebol/src/domain/selecao_entity.dart';
-import 'package:futebol/src/errors/errors.dart';
+import 'package:futebol/src/domain/entities/selecao_entity.dart';
+import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 import 'package:futebol/src/infra/datasource/datasource_interface.dart';
 import 'package:futebol/src/infra/repositories/repository_impl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+
 import 'datasource.mocks.dart';
 
 @GenerateMocks([DataSourceMock])
@@ -17,33 +18,33 @@ void main() {
   final repository = Repository(datasource: datasource);
 
   group("Repository is working rightly", () {
-    group("Method getAllSelecoes is working addequately", () {
-      test("Returns an EmptyList when datasource throw that", () async {
-        when(datasource.getAllSelecoes())
-            .thenAnswer((_) async => Left(EmptyList("Empty List")));
+    group("Method getAllSelections is working addequately", () {
+      test("Returns an SelectionError when datasource throw that", () async {
+        when(datasource.getAllSelections())
+            .thenAnswer((_) async => throw SelectionError(""));
 
-        var result = await repository.getAllSelecoes();
+        var result = await repository.getAllSelections();
 
         expect(result.fold(id, id), isA<Failure>());
-        expect(result.fold(id, id), isA<EmptyList>());
+        expect(result.fold(id, id), isA<SelectionError>());
         expect(result.fold((l) => l.toString(), id), isA<String>());
       });
 
       test("Returns a List of Selecao when datasource answer that", () async {
-        when(datasource.getAllSelecoes()).thenAnswer((_) async =>
-            Right(List.generate(10, (index) => FakeFactory.generateSelecao())));
+        when(datasource.getAllSelections()).thenAnswer((_) async =>
+            List.generate(10, (index) => FakeFactory.generateSelecao()));
 
-        var result = await repository.getAllSelecoes();
+        var result = await repository.getAllSelections();
 
         expect(result.fold(id, id), isA<List>());
         expect(result.fold(id, id), isA<List<Selecao>>());
       });
 
       test("Returns a DataSourceError when datasource throw that", () async {
-        when(datasource.getAllSelecoes())
-            .thenAnswer((_) async => Left(DataSourceError()));
+        when(datasource.getAllSelections())
+            .thenAnswer((_) async => throw DataSourceError(""));
 
-        var result = await repository.getAllSelecoes();
+        var result = await repository.getAllSelections();
 
         expect(result.fold(id, id), isA<Failure>());
         expect(result.fold(id, id), isA<DataSourceError>());
@@ -51,23 +52,23 @@ void main() {
       });
     });
 
-    group("Method getSelecoesByGroup is working adequatelly", () {
-      test("Returns an EmptyList when datasource throws that", () async {
-        when(datasource.getSelecaoByGroup(any))
-            .thenAnswer((_) async => Left(EmptyList("Empty List")));
+    group("Method getSelectionsByGroup is working adequatelly", () {
+      test("Returns an SelectionError when datasource throws that", () async {
+        when(datasource.getSelectionsByGroup(any))
+            .thenAnswer((_) async => throw SelectionError(""));
 
-        var result = await repository.getSelecoesByGroup("A");
+        var result = await repository.getSelectionsByGroup("A");
 
         expect(result.fold(id, id), isA<Failure>());
-        expect(result.fold(id, id), isA<EmptyList>());
+        expect(result.fold(id, id), isA<SelectionError>());
         expect(result.fold((l) => l.toString(), id), isA<String>());
       });
 
       test("Returns a DataSourceError when datasource throws that", () async {
-        when(datasource.getSelecaoByGroup(any))
-            .thenAnswer((_) async => Left(DataSourceError()));
+        when(datasource.getSelectionsByGroup(any))
+            .thenAnswer((_) async => throw DataSourceError(""));
 
-        var result = await repository.getSelecoesByGroup('A');
+        var result = await repository.getSelectionsByGroup('A');
 
         expect(result.fold(id, id), isA<Failure>());
         expect(result.fold(id, id), isA<DataSourceError>());
@@ -76,29 +77,19 @@ void main() {
     });
     group("Method getSelecao is working adequatelly", () {
       test("Returns a Selecao when no errors occur", () async {
-        when(datasource.getSelecaoById(any))
-            .thenAnswer((_) async => Right(FakeFactory.generateSelecao()));
+        when(datasource.getSelectionById(any))
+            .thenAnswer((_) async => FakeFactory.generateSelecao());
 
-        var result = await repository.getSelecao(10);
+        var result = await repository.getSelection(10);
 
         expect(result.fold(id, id), isA<Selecao>());
       });
-      test("Returns a SelecaoError when datasource throws that", () async {
-        when(datasource.getSelecaoById(any))
-            .thenAnswer((_) async => Left(SelecaoError("Selecao Don't Exist")));
-
-        var result = await repository.getSelecao(10);
-
-        expect(result.fold(id, id), isA<Failure>());
-        expect(result.fold(id, id), isA<SelecaoError>());
-        expect(result.fold((l) => l.toString(), id), isA<String>());
-      });
 
       test("Returns a DataSourceError when datasource throws that", () async {
-        when(datasource.getSelecaoById(any))
-            .thenAnswer((_) async => Left(DataSourceError()));
+        when(datasource.getSelectionById(any))
+            .thenAnswer((_) async => throw DataSourceError(""));
 
-        var result = await repository.getSelecao(5);
+        var result = await repository.getSelection(5);
 
         expect(result.fold(id, id), isA<Failure>());
         expect(result.fold(id, id), isA<DataSourceError>());

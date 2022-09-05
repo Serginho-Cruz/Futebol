@@ -6,11 +6,11 @@
 import 'dart:async' as _i4;
 
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:futebol/src/domain/selecao_entity.dart' as _i6;
-import 'package:futebol/src/errors/errors.dart' as _i5;
+import 'package:futebol/src/domain/entities/selecao_entity.dart' as _i6;
+import 'package:futebol/src/errors/errors_classes/errors_classes.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
-import 'get_all_selecoes_impl_test.dart' as _i3;
+import 'get_all_selections_impl_test.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -37,27 +37,27 @@ class MockRepositoryMock extends _i1.Mock implements _i3.RepositoryMock {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>> getAllSelecoes() =>
-      (super.noSuchMethod(Invocation.method(#getAllSelecoes, []),
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>> getAllSelections() =>
+      (super.noSuchMethod(Invocation.method(#getAllSelections, []),
               returnValue:
                   _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>>.value(
                       _FakeEither_0<_i5.Failure, List<_i6.Selecao>>(
-                          this, Invocation.method(#getAllSelecoes, []))))
+                          this, Invocation.method(#getAllSelections, []))))
           as _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>> getSelecoesByGroup(
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>> getSelectionsByGroup(
           String? group) =>
-      (super.noSuchMethod(Invocation.method(#getSelecoesByGroup, [group]),
+      (super.noSuchMethod(Invocation.method(#getSelectionsByGroup, [group]),
               returnValue:
                   _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>>.value(
                       _FakeEither_0<_i5.Failure, List<_i6.Selecao>>(this,
-                          Invocation.method(#getSelecoesByGroup, [group]))))
+                          Invocation.method(#getSelectionsByGroup, [group]))))
           as _i4.Future<_i2.Either<_i5.Failure, List<_i6.Selecao>>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, _i6.Selecao>> getSelecao(int? id) =>
-      (super.noSuchMethod(Invocation.method(#getSelecao, [id]),
+  _i4.Future<_i2.Either<_i5.Failure, _i6.Selecao>> getSelection(int? id) =>
+      (super.noSuchMethod(Invocation.method(#getSelection, [id]),
           returnValue: _i4.Future<_i2.Either<_i5.Failure, _i6.Selecao>>.value(
               _FakeEither_0<_i5.Failure, _i6.Selecao>(
-                  this, Invocation.method(#getSelecao, [id])))) as _i4
+                  this, Invocation.method(#getSelection, [id])))) as _i4
           .Future<_i2.Either<_i5.Failure, _i6.Selecao>>);
 }

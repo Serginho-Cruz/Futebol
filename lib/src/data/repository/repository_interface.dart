@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:futebol/src/domain/selecao_entity.dart';
+import 'package:futebol/src/domain/entities/selecao_entity.dart';
 
-import '../../errors/errors.dart';
+import '../../errors/errors_classes/errors_classes.dart';
 
 abstract class IRepository {
-  Future<Either<Failure, List<Selecao>>> getAllSelecoes();
-  Future<Either<Failure, List<Selecao>>> getSelecoesByGroup(String group);
-  Future<Either<Failure, Selecao>> getSelecao(int id);
+  Future<Either<Failure, List<Selecao>>> getAllSelections();
+  Future<Either<Failure, List<Selecao>>> getSelectionsByGroup(String group);
+  Future<Either<Failure, Selecao>> getSelection(int id);
 }
