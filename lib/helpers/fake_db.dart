@@ -1,7 +1,7 @@
-import 'package:futebol/src/domain/entities/selecao_entity.dart';
-import 'package:futebol/src/domain/entities/selecao_mapper.dart';
-import 'package:futebol/src/errors/errors_mensages_classes/errors_mensages.dart';
+import '../src/domain/entities/selecao_entity.dart';
+import '../src/domain/entities/selecao_mapper.dart';
 import '../src/errors/errors_classes/errors_classes.dart';
+import '../src/errors/errors_mensages_classes/errors_mensages.dart';
 import 'selecao_factory.dart';
 
 class FakeDB {
