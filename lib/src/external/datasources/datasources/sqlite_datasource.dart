@@ -3,14 +3,14 @@ import 'package:futebol/src/domain/entities/selecao_mapper.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 import 'package:futebol/src/errors/errors_mensages_classes/errors_mensages.dart';
 import 'package:futebol/src/external/databases/SQLite/sqlite.dart';
-import 'package:futebol/src/external/databases/SQLite/tables.dart';
+import 'package:futebol/src/external/databases/SQLite/tables_schema.dart';
 import 'package:futebol/src/infra/datasource/datasource_interface.dart';
 
 class SQLitedatasource implements IDataSource {
   @override
   Future<List<Selecao>> getAllSelections() async {
     final db = await DB.instance.database;
-    final list = await db.transaction((txn) => txn.query(SelectionTable.name));
+    final list = await db.transaction((txn) => txn.query(SelectionTableSchema.NAME);
 
     if (list.isNotEmpty) {
       return list.map((e) => SelecaoMapper.fromMap(e)).toList();

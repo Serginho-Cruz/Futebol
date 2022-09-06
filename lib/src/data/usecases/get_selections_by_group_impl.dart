@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:futebol/src/domain/entities/selecao_entity.dart';
-import 'package:futebol/src/domain/usecases/getSelectionsByGroup/get_selections_by_group_interface.dart';
+
+import '../../domain/entities/selecao_entity.dart';
+import '../../domain/usecases/getSelectionsByGroup/get_selections_by_group_interface.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 import '../repository/repository_interface.dart';
 

@@ -1,10 +1,12 @@
-import 'package:futebol/src/domain/entities/selecao_entity.dart';
-import 'package:futebol/src/domain/entities/selecao_mapper.dart';
-import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
-import 'package:futebol/src/errors/errors_mensages_classes/errors_mensages.dart';
-import 'package:futebol/src/external/databases/SQLite/tables.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
+import '../../../domain/entities/selecao_entity.dart';
+import '../../../domain/entities/selecao_mapper.dart';
+import '../../../errors/errors_classes/errors_classes.dart';
+import '../../../errors/errors_mensages_classes/errors_mensages.dart';
+import '../scritps_db.dart';
+import 'tables_schema.dart';
 
 class DB {
   static final DB instance = DB._init();
@@ -23,22 +25,11 @@ class DB {
     final dbPath = await getDatabasesPath();
     String path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1,
-        onCreate: (Database db, int version) async {
-      await db.execute('''
-      CREATE TABLE ${SelectionTable.name} (
-        ${SelectionTable.idColumn} INTEGER PRIMARY KEY NOT NULL AUTOINCREMENT, 
-        ${SelectionTable.nameColumn} TEXT NOT NULL, 
-        ${SelectionTable.flagColumn} TEXT NOT NULL, 
-        ${SelectionTable.groupColumn} TEXT NOT NULL,
-        ${SelectionTable.pointsColumn} INTEGER NULL,
-        ${SelectionTable.victoriesColumn} INTEGER NULL,
-        ${SelectionTable.gpColumn} INTEGER NULL,
-        ${SelectionTable.gcColumn} INTEGER NULL,
-        ${SelectionTable.sgColumn} INTEGER NULL
-        )
-      ''');
-    });
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: _onCreateSchema,
+    );
   }
 
   Future<Selecao> create(Selecao selecao) async {
@@ -69,5 +60,20 @@ class DB {
   Future<void> close() async {
     final db = await instance.database;
     await db.close();
+  }
+
+  Future<void> _onCreateSchema(db, versao) async {
+    await db.execute(createSelectionTableScript());
+    await _populateTables();
+  }
+
+  Future<void> _populateTables() async {
+    final db = await instance.database;
+
+    var resul = await db.query(SelectionTableSchema.nameTable);
+    if (resul.isEmpty) {
+      populateSelectionTableScript(db);
+    }
+    var resul2 = await db.query(SelectionTableSchema.nameTable);
   }
 }
