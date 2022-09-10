@@ -1,4 +1,4 @@
-import '../../domain/entities/selecao_entity.dart';
+import '../../domain/entities/Selection/selection_entity.dart';
 
 abstract class IDataSource {
   Future<List<Selecao>> getAllSelections();

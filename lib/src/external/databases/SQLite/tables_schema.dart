@@ -1,6 +1,5 @@
 abstract class SelectionTableSchema {
   static const String nameTable = "Selecao";
-//  static const String name = "Selecao";
   static const String idColumn = "id";
   static const String groupColumn = "grupo";
   static const String nameColumn = "nome";

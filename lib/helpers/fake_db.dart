@@ -1,7 +1,7 @@
-import '../src/domain/entities/selecao_entity.dart';
-import '../src/domain/entities/selecao_mapper.dart';
+import '../src/domain/entities/Selection/selection_entity.dart';
+import '../src/domain/entities/Selection/selection_mapper.dart';
 import '../src/errors/errors_classes/errors_classes.dart';
-import '../src/errors/errors_mensages_classes/errors_mensages.dart';
+import '../src/errors/errors_messages_classes/errors_messages.dart';
 import 'selecao_factory.dart';
 
 class FakeDB {

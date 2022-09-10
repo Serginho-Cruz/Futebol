@@ -1,10 +1,10 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../../../domain/entities/selecao_entity.dart';
-import '../../../domain/entities/selecao_mapper.dart';
+import '../../../domain/entities/Selection/selection_entity.dart';
+import '../../../domain/entities/Selection/selection_mapper.dart';
 import '../../../errors/errors_classes/errors_classes.dart';
-import '../../../errors/errors_mensages_classes/errors_mensages.dart';
+import '../../../errors/errors_messages_classes/errors_messages.dart';
 import '../scritps_db.dart';
 import 'tables_schema.dart';
 
@@ -34,9 +34,8 @@ class DB {
 
   Future<Selecao> create(Selecao selecao) async {
     final db = await instance.database;
-    final id =
-        // ignore: unnecessary_string_interpolations
-        await db.insert("${SelectionTable.name}", SelecaoMapper.toMap(selecao));
+    final id = await db.insert(
+        SelectionTableSchema.nameTable, SelecaoMapper.toMap(selecao));
 
     if (id == 0) {
       throw DataSourceError(Messages.genericError);
@@ -64,16 +63,10 @@ class DB {
 
   Future<void> _onCreateSchema(db, versao) async {
     await db.execute(createSelectionTableScript());
-    await _populateTables();
+    await _populateTables(db);
   }
 
-  Future<void> _populateTables() async {
-    final db = await instance.database;
-
-    var resul = await db.query(SelectionTableSchema.nameTable);
-    if (resul.isEmpty) {
-      populateSelectionTableScript(db);
-    }
-    var resul2 = await db.query(SelectionTableSchema.nameTable);
+  Future<void> _populateTables(Database db) async {
+    populateSelectionTableScript(db);
   }
 }

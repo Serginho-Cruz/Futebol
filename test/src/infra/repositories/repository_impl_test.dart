@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:futebol/helpers/selecao_factory.dart';
-import 'package:futebol/src/domain/entities/selecao_entity.dart';
+import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 import 'package:futebol/src/infra/datasource/datasource_interface.dart';
 import 'package:futebol/src/infra/repositories/repository_impl.dart';

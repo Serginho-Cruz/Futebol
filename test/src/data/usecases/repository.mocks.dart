@@ -6,7 +6,8 @@
 import 'dart:async' as _i4;
 
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:futebol/src/domain/entities/selecao_entity.dart' as _i6;
+import 'package:futebol/src/domain/entities/Selection/selection_entity.dart'
+    as _i6;
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 

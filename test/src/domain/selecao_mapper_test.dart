@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:futebol/src/domain/entities/selecao_entity.dart';
-import 'package:futebol/src/domain/entities/selecao_mapper.dart';
+import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
+import 'package:futebol/src/domain/entities/Selection/selection_mapper.dart';
 
 void main() {
   group("Mappers are ok?", () {

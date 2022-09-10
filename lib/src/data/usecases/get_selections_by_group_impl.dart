@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import '../../domain/entities/selecao_entity.dart';
+import '../../domain/entities/Selection/selection_entity.dart';
 import '../../domain/usecases/getSelectionsByGroup/get_selections_by_group_interface.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 import '../repository/repository_interface.dart';

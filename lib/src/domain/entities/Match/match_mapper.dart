@@ -24,7 +24,6 @@ abstract class MatchMapper {
       id: map['idJogo'] as int,
       idSelection1: map['Time_id1'] as int,
       idSelection2: map['Time_id2'] as int,
-      datetime: DateTime.parse('${map['data']} ${map['horario']}'),
       local: map['local'] as String,
       type: map['tipo'] as int,
       score1: map['placar1'] as int,
@@ -33,6 +32,8 @@ abstract class MatchMapper {
       extraTimeScore2: map['placar2_extra'] as int,
       penaltyScore1: map['placar1_penaltis'] as int,
       penaltyScore2: map['placar2_penaltis'] as int,
+      date: map['data'] as String,
+      hour: map['horario'] as String,
     );
   }
 }

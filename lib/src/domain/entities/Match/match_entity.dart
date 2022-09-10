@@ -6,8 +6,8 @@ class SoccerMatch extends Equatable {
   final int idSelection1;
   final int idSelection2;
   final String local;
-  late final String hour;
-  late final String date;
+  final String hour;
+  final String date;
   final int type;
   final int score1;
   final int score2;
@@ -16,23 +16,21 @@ class SoccerMatch extends Equatable {
   final int penaltyScore1;
   final int penaltyScore2;
 
-  SoccerMatch({
+  const SoccerMatch({
     required this.id,
     required this.idSelection1,
     required this.idSelection2,
     required this.local,
+    required this.date,
+    required this.hour,
     required this.type,
-    required DateTime datetime,
     this.score1 = 0,
     this.score2 = 0,
     this.extratimeScore1 = 0,
     this.extraTimeScore2 = 0,
     this.penaltyScore1 = 0,
     this.penaltyScore2 = 0,
-  }) {
-    date = '${datetime.year}-${datetime.month}-${datetime.day}';
-    hour = '${datetime.hour}:${datetime.minute}:00';
-  }
+  });
 
   @override
   List<Object?> get props => [
