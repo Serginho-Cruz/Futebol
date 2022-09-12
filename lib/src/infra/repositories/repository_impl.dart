@@ -7,7 +7,7 @@ import 'package:futebol/src/errors/errors_messages_classes/errors_messages.dart'
 import '../../errors/errors_classes/errors_classes.dart';
 import '../datasource/datasource_interface.dart';
 
-class Repository implements IRepository {
+class Repository implements SelectionRepository {
   IDataSource datasource;
   Repository({
     required this.datasource,

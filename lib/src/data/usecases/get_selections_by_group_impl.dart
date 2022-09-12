@@ -6,7 +6,7 @@ import '../../errors/errors_classes/errors_classes.dart';
 import '../repository/repository_interface.dart';
 
 class GetSelectionsByGroupUC implements IGetSelectionsByGroup {
-  final IRepository repository;
+  final SelectionRepository repository;
 
   GetSelectionsByGroupUC(this.repository);
   @override

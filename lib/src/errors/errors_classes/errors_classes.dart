@@ -43,3 +43,11 @@ class InvalidId extends Failure {
   @override
   String toString() => msg;
 }
+
+class NoMatchsFound extends Failure {
+  String msg;
+  NoMatchsFound(this.msg);
+
+  @override
+  String toString() => msg;
+}

@@ -7,7 +7,7 @@ import '../../errors/errors_messages_classes/errors_messages.dart';
 import '../repository/repository_interface.dart';
 
 class GetSelectionUC implements IGetSelection {
-  final IRepository repository;
+  final SelectionRepository repository;
 
   GetSelectionUC(this.repository);
   @override

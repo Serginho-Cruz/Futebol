@@ -9,7 +9,7 @@ class SelecaoMapper {
       'pontos': selecao.pontos,
       'vitorias': selecao.vitorias,
       'gp': selecao.gp,
-      'sg': selecao.sg,
+      'sg': selecao.gp - selecao.gc,
       'gc': selecao.gc,
       'grupo': selecao.grupo,
     };
@@ -23,7 +23,6 @@ class SelecaoMapper {
       pontos: map['pontos'] == null ? 0 : map['pontos'] as int,
       vitorias: map['vitorias'] == null ? 0 : map['vitorias'] as int,
       gp: map['gp'] == null ? 0 : map['sg'] as int,
-      sg: map['sg'] as int,
       gc: map['gc'] == null ? 0 : map['gc'] as int,
       grupo: map['grupo'] as String,
     );

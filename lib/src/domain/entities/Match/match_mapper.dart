@@ -16,6 +16,7 @@ abstract class MatchMapper {
       'placar2_extra': match.extraTimeScore2,
       'placar1_penaltis': match.penaltyScore1,
       'placar2_penaltis': match.penaltyScore2,
+      'grupo': match.group,
     };
   }
 
@@ -34,6 +35,7 @@ abstract class MatchMapper {
       penaltyScore2: map['placar2_penaltis'] as int,
       date: map['data'] as String,
       hour: map['horario'] as String,
+      group: map['grupo'] == null ? null : map['grupo'] as String,
     );
   }
 }

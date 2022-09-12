@@ -18,7 +18,6 @@ void main() {
       expect(selecao.nome, isA<String>());
       expect(selecao.pontos, isA<int>());
       expect(selecao.vitorias, isA<int>());
-      expect(selecao.sg, isA<int>());
       expect(selecao.gc, isA<int>());
       expect(selecao.gp, isA<int>());
       expect(selecao.grupo, isA<String>());
@@ -31,7 +30,6 @@ void main() {
       expect(selecao.grupo, equals(grupo));
       expect(selecao.gc, equals(0));
       expect(selecao.gp, equals(0));
-      expect(selecao.sg, equals(0));
       expect(selecao.pontos, equals(0));
       expect(selecao.vitorias, equals(0));
     });

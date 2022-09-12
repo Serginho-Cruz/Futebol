@@ -7,7 +7,6 @@ class Selecao extends Equatable {
   final int pontos;
   final int vitorias;
   final int gp;
-  final int sg;
   final int gc;
   final String grupo;
 
@@ -18,7 +17,6 @@ class Selecao extends Equatable {
     this.pontos = 0,
     this.vitorias = 0,
     this.gp = 0,
-    this.sg = 0,
     this.gc = 0,
     required this.grupo,
   });
@@ -33,6 +31,5 @@ class Selecao extends Equatable {
         vitorias,
         gp,
         gc,
-        sg,
       ];
 }

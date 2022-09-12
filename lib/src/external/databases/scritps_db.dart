@@ -17,6 +17,25 @@ String createSelectionTableScript() => '''
     )
   ''';
 
+String createMatchTableScript() => '''
+  CREATE TABLE ${MatchTableSchema.nameTable} (
+    ${MatchTableSchema.idColumn} INTEGER PRIMARY KEY,
+    ${MatchTableSchema.idSelection1Column} INTEGER FOREIGN KEY,
+    ${MatchTableSchema.idSelection2Column} INTEGER PRIMARY KEY,
+    ${MatchTableSchema.localColumn} TEXT NOT NULL,
+    ${MatchTableSchema.hourColumn} TEXT NOT NULL,
+    ${MatchTableSchema.dateColumn} TEXT NOT NULL,
+    ${MatchTableSchema.groupColumn} TEXT NULL,
+    ${MatchTableSchema.typeColumn} INTEGER NOT NULL,
+    ${MatchTableSchema.score1Column} INTEGER NULL,
+    ${MatchTableSchema.score2Column} INTEGER NULL,
+    ${MatchTableSchema.extraTimeScore1Column} INTEGER NULL,
+    ${MatchTableSchema.extraTimeScore2Column} INTEGER NULL,
+    ${MatchTableSchema.penaltys1Column} INTEGER NULL,
+    ${MatchTableSchema.penaltys2Column} INTEGER NULL,
+  )
+''';
+
 void populateSelectionTableScript(Database db) {
   String sql = '''
           INSERT INTO ${SelectionTableSchema.nameTable} (
@@ -27,7 +46,6 @@ void populateSelectionTableScript(Database db) {
             ${SelectionTableSchema.victoriesColumn},
             ${SelectionTableSchema.gpColumn},
             ${SelectionTableSchema.gcColumn},
-            ${SelectionTableSchema.sgColumn}
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''';
   var data = _selectionsDataToBePopulated();
@@ -40,7 +58,6 @@ void populateSelectionTableScript(Database db) {
       raw[SelectionTableSchema.pointsColumn],
       raw[SelectionTableSchema.gpColumn],
       raw[SelectionTableSchema.gcColumn],
-      raw[SelectionTableSchema.sgColumn],
     ]);
   });
 }
@@ -65,6 +82,5 @@ Map<String, dynamic> _generateSelecao(String name, String flag, String group) {
     SelectionTableSchema.pointsColumn: 0,
     SelectionTableSchema.gpColumn: 0,
     SelectionTableSchema.gcColumn: 0,
-    SelectionTableSchema.sgColumn: 0,
   };
 }

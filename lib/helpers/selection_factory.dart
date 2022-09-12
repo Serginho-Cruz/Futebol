@@ -13,7 +13,6 @@ abstract class FakeFactory {
       gc: faker.randomGenerator.integer(20),
       gp: faker.randomGenerator.integer(20),
       pontos: faker.randomGenerator.integer(20),
-      sg: faker.randomGenerator.integer(20),
       vitorias: faker.randomGenerator.integer(20),
     );
   }
@@ -28,7 +27,6 @@ abstract class FakeFactory {
       gc: faker.randomGenerator.integer(20),
       gp: faker.randomGenerator.integer(20),
       pontos: faker.randomGenerator.integer(20),
-      sg: faker.randomGenerator.integer(20),
       vitorias: faker.randomGenerator.integer(20),
     );
   }

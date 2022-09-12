@@ -2,7 +2,7 @@ import '../src/domain/entities/Selection/selection_entity.dart';
 import '../src/domain/entities/Selection/selection_mapper.dart';
 import '../src/errors/errors_classes/errors_classes.dart';
 import '../src/errors/errors_messages_classes/errors_messages.dart';
-import 'selecao_factory.dart';
+import 'selection_factory.dart';
 
 class FakeDB {
   late List<Selecao> selecoes;

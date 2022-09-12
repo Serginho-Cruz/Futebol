@@ -48,7 +48,6 @@ class DB {
         gc: selecao.gc,
         gp: selecao.gp,
         pontos: selecao.pontos,
-        sg: selecao.sg,
         vitorias: selecao.vitorias,
       );
     } else {
