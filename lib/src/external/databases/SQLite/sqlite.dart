@@ -29,7 +29,12 @@ class DB {
       path,
       version: 1,
       onCreate: _onCreateSchema,
+      onConfigure: _onConfigure,
     );
+  }
+
+  Future<void> _onConfigure(Database db) async {
+    await db.execute('PRAGMA foreign_keys = ON');
   }
 
   Future<Selecao> create(Selecao selecao) async {
@@ -60,12 +65,14 @@ class DB {
     await db.close();
   }
 
-  Future<void> _onCreateSchema(db, versao) async {
+  Future<void> _onCreateSchema(Database db, int? versao) async {
     await db.execute(createSelectionTableScript());
+    await db.execute(createMatchTableScript());
     await _populateTables(db);
   }
 
   Future<void> _populateTables(Database db) async {
-    populateSelectionTableScript(db);
+    await populateSelectionTableScript(db);
+    await populateMatchTableScript(db);
   }
 }

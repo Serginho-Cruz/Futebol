@@ -5,7 +5,7 @@ import 'package:futebol/src/data/usecases/get_selection_impl.dart';
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 import 'package:mockito/mockito.dart';
-import 'selection_repository.mocks.dart';
+import '../repository.mocks.dart';
 
 void main() {
   final repository = MockRepositoryMock();

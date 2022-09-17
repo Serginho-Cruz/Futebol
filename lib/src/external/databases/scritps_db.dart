@@ -1,6 +1,7 @@
+import 'package:futebol/src/external/databases/SQLite/Matchs/elimination_matchs.dart';
+import 'package:futebol/src/external/databases/SQLite/Matchs/group_matchs.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'SQLite/selection_names.dart';
+import 'SQLite/selections.dart';
 import 'SQLite/tables_schema.dart';
 
 String createSelectionTableScript() => '''
@@ -12,18 +13,17 @@ String createSelectionTableScript() => '''
     ${SelectionTableSchema.pointsColumn} INTEGER NULL,
     ${SelectionTableSchema.victoriesColumn} INTEGER NULL,
     ${SelectionTableSchema.gpColumn} INTEGER NULL,
-    ${SelectionTableSchema.gcColumn} INTEGER NULL,
-    ${SelectionTableSchema.sgColumn} INTEGER NULL
+    ${SelectionTableSchema.gcColumn} INTEGER NULL
     )
   ''';
 
 String createMatchTableScript() => '''
   CREATE TABLE ${MatchTableSchema.nameTable} (
-    ${MatchTableSchema.idColumn} INTEGER PRIMARY KEY,
-    ${MatchTableSchema.idSelection1Column} INTEGER FOREIGN KEY,
-    ${MatchTableSchema.idSelection2Column} INTEGER PRIMARY KEY,
+    ${MatchTableSchema.idColumn} INTEGER PRIMARY KEY AUTOINCREMENT,
+    ${MatchTableSchema.idSelection1Column} INTEGER NOT NULL,
+    ${MatchTableSchema.idSelection2Column} INTEGER NOT NULL,
     ${MatchTableSchema.localColumn} TEXT NOT NULL,
-    ${MatchTableSchema.hourColumn} TEXT NOT NULL,
+    ${MatchTableSchema.timeColumn} TEXT NOT NULL,
     ${MatchTableSchema.dateColumn} TEXT NOT NULL,
     ${MatchTableSchema.groupColumn} TEXT NULL,
     ${MatchTableSchema.typeColumn} INTEGER NOT NULL,
@@ -33,10 +33,12 @@ String createMatchTableScript() => '''
     ${MatchTableSchema.extraTimeScore2Column} INTEGER NULL,
     ${MatchTableSchema.penaltys1Column} INTEGER NULL,
     ${MatchTableSchema.penaltys2Column} INTEGER NULL,
+    FOREIGN KEY(${MatchTableSchema.idSelection1Column}) REFERENCES ${SelectionTableSchema.nameTable}(${SelectionTableSchema.idColumn}),
+    FOREIGN KEY(${MatchTableSchema.idSelection2Column}) REFERENCES ${SelectionTableSchema.nameTable}(${SelectionTableSchema.idColumn})
   )
 ''';
 
-void populateSelectionTableScript(Database db) {
+Future<void> populateSelectionTableScript(Database db) async {
   String sql = '''
           INSERT INTO ${SelectionTableSchema.nameTable} (
             ${SelectionTableSchema.nameColumn}, 
@@ -45,42 +47,59 @@ void populateSelectionTableScript(Database db) {
             ${SelectionTableSchema.pointsColumn},
             ${SelectionTableSchema.victoriesColumn},
             ${SelectionTableSchema.gpColumn},
-            ${SelectionTableSchema.gcColumn},
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ${SelectionTableSchema.gcColumn}
+          ) VALUES (?, ?, ?, ?, ?, ?, ?)
         ''';
-  var data = _selectionsDataToBePopulated();
 
-  data.forEach((raw) async {
+  selections.forEach((raw) async {
     await db.rawInsert(sql, [
       raw[SelectionTableSchema.nameColumn],
       raw[SelectionTableSchema.flagColumn],
       raw[SelectionTableSchema.groupColumn],
-      raw[SelectionTableSchema.pointsColumn],
-      raw[SelectionTableSchema.gpColumn],
-      raw[SelectionTableSchema.gcColumn],
+      0,
+      0,
+      0,
+      0,
     ]);
   });
 }
 
-List _selectionsDataToBePopulated() {
-  final List<Map<String, dynamic>> data = List.empty(growable: true);
+Future<void> populateMatchTableScript(Database db) async {
+  String sql = ''' 
+      INSERT INTO ${MatchTableSchema.nameTable} (
+        ${MatchTableSchema.idSelection1Column},
+        ${MatchTableSchema.idSelection2Column},
+        ${MatchTableSchema.dateColumn},
+        ${MatchTableSchema.timeColumn},
+        ${MatchTableSchema.localColumn},
+        ${MatchTableSchema.typeColumn},
+        ${MatchTableSchema.groupColumn}
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+  ''';
 
-  SelectionGroups.groups.forEach((group, names) {
-    for (var name in names) {
-      data.add(_generateSelecao(name, 'aaa', group));
-    }
-  });
-  return data;
-}
+  var batch = db.batch();
+  for (var match in groupMatchs) {
+    batch.rawInsert(sql, [
+      match[MatchTableSchema.idSelection1Column],
+      match[MatchTableSchema.idSelection2Column],
+      match[MatchTableSchema.dateColumn],
+      match[MatchTableSchema.timeColumn],
+      match[MatchTableSchema.localColumn],
+      match[MatchTableSchema.typeColumn],
+      match[MatchTableSchema.groupColumn],
+    ]);
+  }
 
-Map<String, dynamic> _generateSelecao(String name, String flag, String group) {
-  return {
-    SelectionTableSchema.nameColumn: name,
-    SelectionTableSchema.flagColumn: flag,
-    SelectionTableSchema.groupColumn: group,
-    SelectionTableSchema.victoriesColumn: 0,
-    SelectionTableSchema.pointsColumn: 0,
-    SelectionTableSchema.gpColumn: 0,
-    SelectionTableSchema.gcColumn: 0,
-  };
+  for (var match in eliminationMatchs) {
+    batch.rawInsert(sql, [
+      match[MatchTableSchema.idSelection1Column],
+      match[MatchTableSchema.idSelection2Column],
+      match[MatchTableSchema.dateColumn],
+      match[MatchTableSchema.timeColumn],
+      match[MatchTableSchema.localColumn],
+      match[MatchTableSchema.typeColumn],
+      match[MatchTableSchema.groupColumn],
+    ]);
+  }
+  await batch.commit(noResult: true);
 }

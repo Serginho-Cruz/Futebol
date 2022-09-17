@@ -6,12 +6,13 @@
 import 'dart:async' as _i4;
 
 import 'package:dartz/dartz.dart' as _i2;
+import 'package:futebol/src/domain/entities/Match/match_entity.dart' as _i7;
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart'
     as _i6;
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 
-import 'get_all_selections_impl_test.dart' as _i3;
+import 'SelectionUC/get_all_selections_impl_test.dart' as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -61,4 +62,22 @@ class MockRepositoryMock extends _i1.Mock implements _i3.RepositoryMock {
               _FakeEither_0<_i5.Failure, _i6.Selecao>(
                   this, Invocation.method(#getSelection, [id])))) as _i4
           .Future<_i2.Either<_i5.Failure, _i6.Selecao>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, List<_i7.SoccerMatch>>> getMatchsByType(
+          int? type) =>
+      (super.noSuchMethod(Invocation.method(#getMatchsByType, [type]),
+          returnValue:
+              _i4.Future<_i2.Either<_i5.Failure, List<_i7.SoccerMatch>>>.value(
+                  _FakeEither_0<_i5.Failure, List<_i7.SoccerMatch>>(this,
+                      Invocation.method(#getMatchsByType, [type])))) as _i4
+          .Future<_i2.Either<_i5.Failure, List<_i7.SoccerMatch>>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, List<_i7.SoccerMatch>>> getMatchsByGroup(
+          String? group) =>
+      (super.noSuchMethod(Invocation.method(#getMatchsByGroup, [group]),
+          returnValue:
+              _i4.Future<_i2.Either<_i5.Failure, List<_i7.SoccerMatch>>>.value(
+                  _FakeEither_0<_i5.Failure, List<_i7.SoccerMatch>>(this,
+                      Invocation.method(#getMatchsByGroup, [group])))) as _i4
+          .Future<_i2.Either<_i5.Failure, List<_i7.SoccerMatch>>>);
 }

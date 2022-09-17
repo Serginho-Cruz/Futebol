@@ -8,7 +8,6 @@ abstract class SelectionTableSchema {
   static const String victoriesColumn = "vitorias";
   static const String gpColumn = "gp";
   static const String gcColumn = "gc";
-  static const String sgColumn = "sg";
 }
 
 abstract class MatchTableSchema {
@@ -16,7 +15,7 @@ abstract class MatchTableSchema {
   static const String idColumn = "idJogo";
   static const String idSelection1Column = "Time_id1";
   static const String idSelection2Column = "Time_id2";
-  static const String hourColumn = "horario";
+  static const String timeColumn = "horario";
   static const String localColumn = "local";
   static const String dateColumn = "data";
   static const String typeColumn = "tipo";

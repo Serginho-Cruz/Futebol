@@ -100,4 +100,33 @@ class SQLitedatasource implements IDataSource {
       throw DataSourceError(Messages.genericError);
     }
   }
+
+  @override
+  Future<void> changeScoreboard({
+    required int score1,
+    required int score2,
+    required int id1,
+    required int id2,
+  }) {
+    // TODO: implement changeScoreboard
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<int?>> getScores(int id1, int id2) async {
+    List<int?> newScores = [];
+    List<Map<String, dynamic>> scores;
+
+    final db = await DB.instance.database;
+
+    scores = await db.query(MatchTableSchema.nameTable,
+        columns: [MatchTableSchema.score1Column, MatchTableSchema.score2Column],
+        where:
+            '${MatchTableSchema.idSelection1Column} = ? and ${MatchTableSchema.idSelection2Column} = ?',
+        whereArgs: [id1, id2]);
+
+    newScores.add(scores[0][MatchTableSchema.score1Column]);
+    newScores.add(scores[0][MatchTableSchema.score2Column]);
+    return newScores;
+  }
 }

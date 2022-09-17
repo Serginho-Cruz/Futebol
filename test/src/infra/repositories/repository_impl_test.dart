@@ -15,7 +15,7 @@ class DataSourceMock extends Mock implements IDataSource {}
 
 void main() {
   final datasource = MockDataSourceMock();
-  final repository = Repository(datasource: datasource);
+  final repository = Repository(datasource);
 
   group("Repository is working rightly", () {
     group("Method getAllSelections is working addequately", () {

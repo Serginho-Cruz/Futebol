@@ -1,21 +1,21 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:futebol/helpers/soccer_match_factory.dart';
-import 'package:futebol/src/data/repository/match_repository_interface.dart';
+import 'package:futebol/src/data/repository/repository_interface.dart';
 import 'package:futebol/src/data/usecases/get_matchs_by_type_impl.dart';
 import 'package:futebol/src/domain/entities/Match/match_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'match_repository.mocks.dart';
+import '../repository.mocks.dart';
 
 @GenerateMocks([SoccerMatchMock])
-class SoccerMatchMock extends Mock implements ISoccerMatchRepository {}
+class SoccerMatchMock extends Mock implements IRepository {}
 
 void main() {
   group("Usecase GetMatchsByType is working rightly", () {
-    final repository = MockSoccerMatchMock();
+    final repository = MockRepositoryMock();
     final usecase = GetMatchsByTypeUC(repository);
 
     test("Returns an error when repository answer that", () async {

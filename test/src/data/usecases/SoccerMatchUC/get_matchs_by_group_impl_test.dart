@@ -5,11 +5,11 @@ import 'package:futebol/src/data/usecases/get_matchs_by_group_impl.dart';
 import 'package:futebol/src/domain/entities/Match/match_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 import 'package:mockito/mockito.dart';
-import 'match_repository.mocks.dart';
+import '../repository.mocks.dart';
 
 void main() {
   group("Usecase GetMatchsByGroup is working", () {
-    final repository = MockSoccerMatchMock();
+    final repository = MockRepositoryMock();
     final usecase = GetMatchsByGroupUC(repository);
 
     test("Returns an Error when repository answer that", () async {

@@ -5,7 +5,7 @@ import 'package:futebol/src/domain/usecases/getAllSelections/get_all_selections_
 import '../../errors/errors_classes/errors_classes.dart';
 
 class GetAllSelectionsUC implements IGetAllSelections {
-  final SelectionRepository repository;
+  final IRepository repository;
 
   GetAllSelectionsUC(this.repository);
 

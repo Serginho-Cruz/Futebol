@@ -7,10 +7,11 @@ import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'selection_repository.mocks.dart';
+
+import '../repository.mocks.dart';
 
 @GenerateMocks([RepositoryMock])
-class RepositoryMock extends Mock implements SelectionRepository {}
+class RepositoryMock extends Mock implements IRepository {}
 
 void main() {
   final repository = MockRepositoryMock();
