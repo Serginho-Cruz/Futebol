@@ -5,6 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
+import 'package:futebol/src/domain/entities/Match/match_entity.dart' as _i5;
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -51,4 +52,16 @@ class MockDataSourceMock extends _i1.Mock implements _i3.DataSourceMock {
           returnValue: _i4.Future<_i2.Selecao>.value(
               _FakeSelecao_0(this, Invocation.method(#getSelectionById, [id]))))
       as _i4.Future<_i2.Selecao>);
+  @override
+  _i4.Future<List<_i5.SoccerMatch>> getMatchsByGroup(String? group) =>
+      (super.noSuchMethod(Invocation.method(#getMatchsByGroup, [group]),
+              returnValue:
+                  _i4.Future<List<_i5.SoccerMatch>>.value(<_i5.SoccerMatch>[]))
+          as _i4.Future<List<_i5.SoccerMatch>>);
+  @override
+  _i4.Future<List<_i5.SoccerMatch>> getMatchsByType(int? type) =>
+      (super.noSuchMethod(Invocation.method(#getMatchsByType, [type]),
+              returnValue:
+                  _i4.Future<List<_i5.SoccerMatch>>.value(<_i5.SoccerMatch>[]))
+          as _i4.Future<List<_i5.SoccerMatch>>);
 }

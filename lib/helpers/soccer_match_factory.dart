@@ -44,4 +44,19 @@ abstract class MatchFactory {
       group: group,
     );
   }
+
+  static SoccerMatch generateWithData(
+      {required int score1, required int score2}) {
+    return SoccerMatch(
+      id: faker.randomGenerator.integer(50),
+      idSelection1: faker.randomGenerator.integer(32),
+      idSelection2: faker.randomGenerator.integer(32),
+      local: faker.address.city(),
+      date: faker.date.dateTime().toString(),
+      hour: faker.date.time(),
+      type: SoccerMatchType.group,
+      score1: score1,
+      score2: score2,
+    );
+  }
 }

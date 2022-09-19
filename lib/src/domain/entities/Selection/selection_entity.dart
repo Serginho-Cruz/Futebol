@@ -27,9 +27,5 @@ class Selecao extends Equatable {
         nome,
         bandeira,
         grupo,
-        pontos,
-        vitorias,
-        gp,
-        gc,
       ];
 }

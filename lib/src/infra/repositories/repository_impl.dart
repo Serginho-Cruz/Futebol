@@ -80,4 +80,16 @@ class Repository implements IRepository {
       return Left(DataSourceError(Messages.genericError));
     }
   }
+
+  @override
+  Future<Either<Failure, SoccerMatch>> getMatchById(int id) {
+    // TODO: implement getMatchById
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<Selecao>>> getSelectionByIds(int id, int id2) {
+    // TODO: implement getSelectionByIds
+    throw UnimplementedError();
+  }
 }

@@ -10,4 +10,6 @@ abstract class IRepository {
   Future<Either<Failure, Selecao>> getSelection(int id);
   Future<Either<Failure, List<SoccerMatch>>> getMatchsByType(int type);
   Future<Either<Failure, List<SoccerMatch>>> getMatchsByGroup(String group);
+  Future<Either<Failure, SoccerMatch>> getMatchById(int id);
+  Future<Either<Failure, List<Selecao>>> getSelectionByIds(int id, int id2);
 }

@@ -30,4 +30,25 @@ abstract class FakeFactory {
       vitorias: faker.randomGenerator.integer(20),
     );
   }
+
+  static Selecao generateWithData({
+    required int id,
+    required int gp,
+    required int gc,
+    required int pontos,
+    required int vitorias,
+  }) {
+    final faker = Faker();
+
+    return Selecao(
+      id: id,
+      nome: faker.person.firstName(),
+      bandeira: faker.image.image(),
+      grupo: faker.lorem.word().substring(0, 1),
+      gc: gc,
+      gp: gp,
+      pontos: pontos,
+      vitorias: vitorias,
+    );
+  }
 }

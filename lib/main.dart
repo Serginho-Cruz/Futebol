@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:futebol/src/external/datasources/sqlite/sqlite_datasource.dart';
 
 void main() async {
   runApp(const MyApp());
-
-  var datasource = SQLitedatasource();
-  var list = await datasource.getScores(3, 2);
 }
 
 class MyApp extends StatelessWidget {
