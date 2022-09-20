@@ -12,4 +12,5 @@ abstract class IRepository {
   Future<Either<Failure, List<SoccerMatch>>> getMatchsByGroup(String group);
   Future<Either<Failure, SoccerMatch>> getMatchById(int id);
   Future<Either<Failure, List<Selecao>>> getSelectionByIds(int id, int id2);
+  Future<Either<Failure, void>> changeScoreboard(List<Selecao> selections);
 }

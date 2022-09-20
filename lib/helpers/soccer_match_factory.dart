@@ -46,7 +46,7 @@ abstract class MatchFactory {
   }
 
   static SoccerMatch generateWithData(
-      {required int score1, required int score2}) {
+      {required int? score1, required int? score2}) {
     return SoccerMatch(
       id: faker.randomGenerator.integer(50),
       idSelection1: faker.randomGenerator.integer(32),

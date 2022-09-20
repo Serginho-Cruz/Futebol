@@ -92,4 +92,10 @@ class Repository implements IRepository {
     // TODO: implement getSelectionByIds
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, void>> changeScoreboard(List<Selecao> selections) {
+    // TODO: implement changeScoreboard
+    throw UnimplementedError();
+  }
 }
