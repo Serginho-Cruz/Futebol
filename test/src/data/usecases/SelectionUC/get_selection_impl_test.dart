@@ -4,14 +4,14 @@ import 'package:futebol/helpers/selection_factory.dart';
 import 'package:futebol/src/data/usecases/get_selection_impl.dart';
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
-import 'package:mockito/mockito.dart';
-import '../repository.mocks.dart';
+import 'package:mocktail/mocktail.dart';
+import '../classes_mocks.dart';
 
 void main() {
-  final repository = MockRepositoryMock();
+  final repository = SelectionRepositoryMock();
   final usecase = GetSelectionUC(repository);
   group("GetSelecao Usecase is working", () {
-    when(repository.getSelection(any))
+    when(() => repository.getSelection(any()))
         .thenAnswer((_) async => Right(FakeFactory.generateSelecao()));
     test("Returns an error when given id is zero or negative", () async {
       var result = await usecase(0);

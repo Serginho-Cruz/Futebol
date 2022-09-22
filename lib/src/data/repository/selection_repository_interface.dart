@@ -4,13 +4,8 @@ import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import '../../domain/entities/Match/match_entity.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 
-abstract class IRepository {
+abstract class ISelectionRepository {
   Future<Either<Failure, List<Selecao>>> getAllSelections();
   Future<Either<Failure, List<Selecao>>> getSelectionsByGroup(String group);
   Future<Either<Failure, Selecao>> getSelection(int id);
-  Future<Either<Failure, List<SoccerMatch>>> getMatchsByType(int type);
-  Future<Either<Failure, List<SoccerMatch>>> getMatchsByGroup(String group);
-  Future<Either<Failure, SoccerMatch>> getMatchById(int id);
-  Future<Either<Failure, List<Selecao>>> getSelectionByIds(int id, int id2);
-  Future<Either<Failure, void>> changeScoreboard(List<Selecao> selections);
 }

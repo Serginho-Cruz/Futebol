@@ -4,10 +4,10 @@ import '../../domain/entities/Selection/selection_entity.dart';
 import '../../domain/usecases/getSelection/get_selection_by_id_interface.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 import '../../errors/errors_messages_classes/errors_messages.dart';
-import '../repository/repository_interface.dart';
+import '../repository/selection_repository_interface.dart';
 
 class GetSelectionUC implements IGetSelection {
-  final IRepository repository;
+  final ISelectionRepository repository;
 
   GetSelectionUC(this.repository);
   @override

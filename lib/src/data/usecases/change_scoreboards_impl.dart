@@ -1,14 +1,15 @@
 import 'package:dartz/dartz.dart';
-import 'package:futebol/src/data/repository/repository_interface.dart';
-
+import 'package:futebol/src/data/repository/match_repository_interface.dart';
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
+import 'package:futebol/src/domain/usecases/changeScoreboard/change_scoreboard_interface.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 
-class ChangeScoreboard {
-  final IRepository repository;
+class ChangeScoreboard implements IChangeScoreboard {
+  final IMatchRepository repository;
 
   ChangeScoreboard(this.repository);
 
+  @override
   Future<Either<Failure, List<Selecao>>> call({
     required int selectionId1,
     required int selectionId2,

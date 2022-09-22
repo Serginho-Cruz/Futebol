@@ -4,23 +4,19 @@ import 'package:futebol/helpers/selection_factory.dart';
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 import 'package:futebol/src/infra/datasource/datasource_interface.dart';
-import 'package:futebol/src/infra/repositories/repository_impl.dart';
-import 'package:mockito/mockito.dart';
-import 'package:mockito/annotations.dart';
+import 'package:futebol/src/infra/repositories/selection_repository_impl.dart';
+import 'package:mocktail/mocktail.dart';
 
-import 'datasource.mocks.dart';
-
-@GenerateMocks([DataSourceMock])
 class DataSourceMock extends Mock implements IDataSource {}
 
 void main() {
-  final datasource = MockDataSourceMock();
-  final repository = Repository(datasource);
+  final datasource = DataSourceMock();
+  final repository = SelectionRepository(datasource);
 
   group("Repository is working rightly", () {
     group("Method getAllSelections is working addequately", () {
       test("Returns an SelectionError when datasource throw that", () async {
-        when(datasource.getAllSelections())
+        when(() => datasource.getAllSelections())
             .thenAnswer((_) async => throw SelectionError(""));
 
         var result = await repository.getAllSelections();
@@ -31,7 +27,7 @@ void main() {
       });
 
       test("Returns a List of Selecao when datasource answer that", () async {
-        when(datasource.getAllSelections()).thenAnswer((_) async =>
+        when(() => datasource.getAllSelections()).thenAnswer((_) async =>
             List.generate(10, (index) => FakeFactory.generateSelecao()));
 
         var result = await repository.getAllSelections();
@@ -41,7 +37,7 @@ void main() {
       });
 
       test("Returns a DataSourceError when datasource throw that", () async {
-        when(datasource.getAllSelections())
+        when(() => datasource.getAllSelections())
             .thenAnswer((_) async => throw DataSourceError(""));
 
         var result = await repository.getAllSelections();
@@ -54,7 +50,7 @@ void main() {
 
     group("Method getSelectionsByGroup is working adequatelly", () {
       test("Returns an SelectionError when datasource throws that", () async {
-        when(datasource.getSelectionsByGroup(any))
+        when(() => datasource.getSelectionsByGroup(any()))
             .thenAnswer((_) async => throw SelectionError(""));
 
         var result = await repository.getSelectionsByGroup("A");
@@ -65,7 +61,7 @@ void main() {
       });
 
       test("Returns a DataSourceError when datasource throws that", () async {
-        when(datasource.getSelectionsByGroup(any))
+        when(() => datasource.getSelectionsByGroup(any()))
             .thenAnswer((_) async => throw DataSourceError(""));
 
         var result = await repository.getSelectionsByGroup('A');
@@ -77,7 +73,7 @@ void main() {
     });
     group("Method getSelecao is working adequatelly", () {
       test("Returns a Selecao when no errors occur", () async {
-        when(datasource.getSelectionById(any))
+        when(() => datasource.getSelectionById(any()))
             .thenAnswer((_) async => FakeFactory.generateSelecao());
 
         var result = await repository.getSelection(10);
@@ -86,7 +82,7 @@ void main() {
       });
 
       test("Returns a DataSourceError when datasource throws that", () async {
-        when(datasource.getSelectionById(any))
+        when(() => datasource.getSelectionById(any()))
             .thenAnswer((_) async => throw DataSourceError(""));
 
         var result = await repository.getSelection(5);

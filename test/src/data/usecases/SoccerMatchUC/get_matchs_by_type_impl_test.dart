@@ -1,25 +1,20 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:futebol/helpers/soccer_match_factory.dart';
-import 'package:futebol/src/data/repository/repository_interface.dart';
 import 'package:futebol/src/data/usecases/get_matchs_by_type_impl.dart';
 import 'package:futebol/src/domain/entities/Match/match_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-import '../repository.mocks.dart';
-
-@GenerateMocks([SoccerMatchMock])
-class SoccerMatchMock extends Mock implements IRepository {}
+import '../classes_mocks.dart';
 
 void main() {
   group("Usecase GetMatchsByType is working rightly", () {
-    final repository = MockRepositoryMock();
+    final repository = MatchRepositoryMock();
     final usecase = GetMatchsByTypeUC(repository);
 
     test("Returns an error when repository answer that", () async {
-      when(repository.getMatchsByType(any))
+      when(() => repository.getMatchsByType(any()))
           .thenAnswer((_) async => Left(DataSourceError('')));
 
       var result = await usecase(SoccerMatchType.group);
@@ -31,8 +26,9 @@ void main() {
     test("Returns a List of SoccerMatchs when works rightly", () async {
       const int type = SoccerMatchType.finalMatch;
       bool allTypesAreCorrect = true;
-      when(repository.getMatchsByType(any)).thenAnswer((_) async => Right(
-          List.generate(4, (_) => MatchFactory.generateMatchWithType(type))));
+      when(() => repository.getMatchsByType(any())).thenAnswer((_) async =>
+          Right(List.generate(
+              4, (_) => MatchFactory.generateMatchWithType(type))));
 
       var result = await usecase(type);
 
