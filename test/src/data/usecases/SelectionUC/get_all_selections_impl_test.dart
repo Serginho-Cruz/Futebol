@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:futebol/src/data/usecases/Selection/get_all_selections_impl.dart';
+import 'package:mocktail/mocktail.dart';
+
 import 'package:futebol/helpers/selection_factory.dart';
-import 'package:futebol/src/data/repository/selection_repository_interface.dart';
-import 'package:futebol/src/data/usecases/get_all_selections_impl.dart';
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
-import 'package:mocktail/mocktail.dart';
 
 import '../classes_mocks.dart';
 

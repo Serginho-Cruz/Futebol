@@ -3,7 +3,6 @@ import 'package:futebol/src/data/repository/match_repository_interface.dart';
 import 'package:futebol/src/infra/datasource/datasource_interface.dart';
 
 import '../../domain/entities/Match/match_entity.dart';
-import '../../domain/entities/Selection/selection_entity.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 import '../../errors/errors_messages_classes/errors_messages.dart';
 
@@ -47,13 +46,8 @@ class MatchRepository implements IMatchRepository {
   }
 
   @override
-  Future<Either<Failure, List<Selecao>>> getSelectionByIds(int id, int id2) {
-    // TODO: implement getSelectionByIds
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, void>> changeScoreboard(List<Selecao> selections) {
+  Future<Either<Failure, int>> changeScoreboard(
+      {required int matchId, required int newScore1, required int newScore2}) {
     // TODO: implement changeScoreboard
     throw UnimplementedError();
   }

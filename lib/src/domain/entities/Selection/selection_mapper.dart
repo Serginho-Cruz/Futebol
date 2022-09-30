@@ -9,7 +9,6 @@ class SelecaoMapper {
       'pontos': selecao.pontos,
       'vitorias': selecao.vitorias,
       'gp': selecao.gp,
-      'sg': selecao.gp - selecao.gc,
       'gc': selecao.gc,
       'grupo': selecao.grupo,
     };

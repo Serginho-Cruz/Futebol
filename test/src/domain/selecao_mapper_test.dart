@@ -4,10 +4,11 @@ import 'package:futebol/src/domain/entities/Selection/selection_mapper.dart';
 
 void main() {
   group("Mappers are ok?", () {
-    int id = 9;
-    String bandeira = "bandeira", nome = "França", grupo = "C";
+    const int id = 9;
+    const String bandeira = "bandeira", nome = "França", grupo = "C";
 
-    var selecao = Selecao(id: id, nome: nome, bandeira: bandeira, grupo: grupo);
+    var selecao =
+        const Selecao(id: id, nome: nome, bandeira: bandeira, grupo: grupo);
 
     test("Method toMap is working", () {
       var map = <String, dynamic>{
@@ -15,7 +16,6 @@ void main() {
         'bandeira': bandeira,
         'grupo': grupo,
         'nome': nome,
-        'sg': 0,
         'gc': 0,
         'gp': 0,
         'pontos': 0,

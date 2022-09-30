@@ -102,7 +102,7 @@ class SQLitedatasource implements IDataSource {
   }
 
   @override
-  Future<void> changeScoreboard({
+  Future<int> changeScoreboard({
     required int score1,
     required int score2,
     required int id1,

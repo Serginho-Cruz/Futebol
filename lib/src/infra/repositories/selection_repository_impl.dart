@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:futebol/src/data/repository/selection_repository_interface.dart';
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:futebol/src/errors/errors_messages_classes/errors_messages.dart';
-import '../../domain/entities/Match/match_entity.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 import '../datasource/datasource_interface.dart';
 
@@ -50,5 +49,18 @@ class SelectionRepository implements ISelectionRepository {
     } on Exception {
       return Left(DataSourceError(Messages.genericError));
     }
+  }
+
+  @override
+  Future<Either<Failure, List<Selecao>>> getSelectionByIds(int id, int id2) {
+    // TODO: implement getSelectionByIds
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, int>> updateSelectionsStatistics(
+      List<Selecao> selections) {
+    // TODO: implement updateSelectionsStatistics
+    throw UnimplementedError();
   }
 }
