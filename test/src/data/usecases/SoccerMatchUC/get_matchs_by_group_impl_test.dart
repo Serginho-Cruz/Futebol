@@ -27,8 +27,8 @@ void main() {
       const String group = 'A';
       bool allGroupsAreEqual = true;
       when(() => repository.getMatchsByGroup(any())).thenAnswer((_) async =>
-          Right(List.generate(
-              4, (_) => MatchFactory.generateMatchWithGroup(group))));
+          Right(
+              List.generate(4, (_) => MatchFactory.generateWithGroup(group))));
 
       var result = await usecase(group);
 

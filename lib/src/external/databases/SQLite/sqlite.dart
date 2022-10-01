@@ -8,9 +8,9 @@ import '../../../errors/errors_messages_classes/errors_messages.dart';
 import '../scritps_db.dart';
 import 'tables_schema.dart';
 
-class DB {
-  static final DB instance = DB._init();
-  DB._init();
+class SQLite {
+  static final SQLite instance = SQLite._init();
+  SQLite._init();
 
   static Database? _database;
 

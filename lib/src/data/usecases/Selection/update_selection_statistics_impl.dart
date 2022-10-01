@@ -19,7 +19,8 @@ class UpdateSelectionsStatisticsUC implements IUpdateSelectionStatistics {
   }) async {
     List<Selecao> selectionsToUpdate;
 
-    var result = await repository.getSelectionByIds(selectionId1, selectionId2);
+    var result =
+        await repository.getSelectionsByIds([selectionId1, selectionId2]);
 
     return result.fold((l) => Left(l), (selections) async {
       int actualWinner = newScores.first > newScores[1]

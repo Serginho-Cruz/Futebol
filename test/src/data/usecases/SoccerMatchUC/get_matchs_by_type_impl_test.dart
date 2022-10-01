@@ -27,8 +27,7 @@ void main() {
       const int type = SoccerMatchType.finalMatch;
       bool allTypesAreCorrect = true;
       when(() => repository.getMatchsByType(any())).thenAnswer((_) async =>
-          Right(List.generate(
-              4, (_) => MatchFactory.generateMatchWithType(type))));
+          Right(List.generate(4, (_) => MatchFactory.generateWithType(type))));
 
       var result = await usecase(type);
 

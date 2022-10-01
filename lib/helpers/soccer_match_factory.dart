@@ -16,7 +16,7 @@ abstract class MatchFactory {
     );
   }
 
-  static SoccerMatch generateMatchWithType(int type) {
+  static SoccerMatch generateWithType(int type) {
     final Faker faker = Faker();
 
     return SoccerMatch(
@@ -30,7 +30,7 @@ abstract class MatchFactory {
     );
   }
 
-  static SoccerMatch generateMatchWithGroup(String group) {
+  static SoccerMatch generateWithGroup(String group) {
     final Faker faker = Faker();
 
     return SoccerMatch(

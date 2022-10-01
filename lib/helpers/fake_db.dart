@@ -51,7 +51,7 @@ class FakeDB {
     }
 
     if (selecao == null) {
-      throw SelectionError(Messages.noSelectionFound);
+      throw NoSelectionsFound(Messages.noSelectionFound);
     } else {
       return SelecaoMapper.toMap(selecao);
     }

@@ -11,14 +11,14 @@ import 'package:futebol/src/infra/datasource/datasource_interface.dart';
 class SQLitedatasource implements IDataSource {
   @override
   Future<List<Selecao>> getAllSelections() async {
-    final db = await DB.instance.database;
+    final db = await SQLite.instance.database;
     final list = await db
         .transaction((txn) => txn.query(SelectionTableSchema.nameTable));
 
     if (list.isNotEmpty) {
       return list.map((e) => SelecaoMapper.fromMap(e)).toList();
     } else if (list.isEmpty) {
-      throw SelectionError(Messages.noSelectionsFound);
+      throw NoSelectionsFound(Messages.noSelectionsFound);
     } else {
       throw DataSourceError(Messages.genericError);
     }
@@ -26,7 +26,7 @@ class SQLitedatasource implements IDataSource {
 
   @override
   Future<List<Selecao>> getSelectionsByGroup(String group) async {
-    final db = await DB.instance.database;
+    final db = await SQLite.instance.database;
     final list = await db.transaction(
       (txn) => txn.query(
         SelectionTableSchema.nameTable,
@@ -35,7 +35,7 @@ class SQLitedatasource implements IDataSource {
       ),
     );
     if (list.isEmpty) {
-      throw SelectionError(Messages.noGroupSelections);
+      throw NoSelectionsFound(Messages.noGroupSelections);
     } else if (list.isNotEmpty) {
       return list.map((e) => SelecaoMapper.fromMap(e)).toList();
     } else {
@@ -45,7 +45,7 @@ class SQLitedatasource implements IDataSource {
 
   @override
   Future<Selecao> getSelectionById(int id) async {
-    final db = await DB.instance.database;
+    final db = await SQLite.instance.database;
     final mapList = await db.transaction(
       (txn) => txn.query(
         SelectionTableSchema.nameTable,
@@ -57,13 +57,13 @@ class SQLitedatasource implements IDataSource {
     if (mapList.isNotEmpty) {
       return SelecaoMapper.fromMap(mapList.first);
     } else {
-      throw SelectionError(Messages.noSelectionFound);
+      throw NoSelectionsFound(Messages.noSelectionFound);
     }
   }
 
   @override
   Future<List<SoccerMatch>> getMatchsByGroup(String group) async {
-    final db = await DB.instance.database;
+    final db = await SQLite.instance.database;
     final mapList = await db.transaction(
       (txn) => txn.query(
         MatchTableSchema.nameTable,
@@ -83,7 +83,7 @@ class SQLitedatasource implements IDataSource {
 
   @override
   Future<List<SoccerMatch>> getMatchsByType(int type) async {
-    final db = await DB.instance.database;
+    final db = await SQLite.instance.database;
     final mapList = await db.transaction(
       (txn) => txn.query(
         MatchTableSchema.nameTable,
@@ -102,31 +102,27 @@ class SQLitedatasource implements IDataSource {
   }
 
   @override
-  Future<int> changeScoreboard({
-    required int score1,
-    required int score2,
-    required int id1,
-    required int id2,
-  }) {
+  Future<List<Selecao>> getSelectionsByids(List<int> ids) {
+    // TODO: implement getSelectionsByids
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> updateSelectionsStatistics(List<Selecao> selections) {
+    // TODO: implement updateSelectionsStatistics
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> changeScoreboard(
+      {required int matchId, required int newScore1, required int newScore2}) {
     // TODO: implement changeScoreboard
     throw UnimplementedError();
   }
 
   @override
-  Future<List<int?>> getScores(int id1, int id2) async {
-    List<int?> newScores = [];
-    List<Map<String, dynamic>> scores;
-
-    final db = await DB.instance.database;
-
-    scores = await db.query(MatchTableSchema.nameTable,
-        columns: [MatchTableSchema.score1Column, MatchTableSchema.score2Column],
-        where:
-            '${MatchTableSchema.idSelection1Column} = ? and ${MatchTableSchema.idSelection2Column} = ?',
-        whereArgs: [id1, id2]);
-
-    newScores.add(scores[0][MatchTableSchema.score1Column]);
-    newScores.add(scores[0][MatchTableSchema.score2Column]);
-    return newScores;
+  Future<SoccerMatch> getMatchById(int id) {
+    // TODO: implement getMatchById
+    throw UnimplementedError();
   }
 }

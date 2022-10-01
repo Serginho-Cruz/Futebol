@@ -6,7 +6,7 @@ abstract class ISelectionRepository {
   Future<Either<Failure, List<Selecao>>> getAllSelections();
   Future<Either<Failure, List<Selecao>>> getSelectionsByGroup(String group);
   Future<Either<Failure, Selecao>> getSelection(int id);
-  Future<Either<Failure, List<Selecao>>> getSelectionByIds(int id, int id2);
+  Future<Either<Failure, List<Selecao>>> getSelectionsByIds(List<int> ids);
   Future<Either<Failure, int>> updateSelectionsStatistics(
       List<Selecao> selections);
 }

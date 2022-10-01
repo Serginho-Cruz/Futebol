@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 abstract class Failure implements Exception {}
 
 class EmptyList extends Failure {
@@ -11,9 +10,17 @@ class EmptyList extends Failure {
   }
 }
 
-class SelectionError extends Failure {
+class NoSelectionsFound extends Failure {
   String msg;
-  SelectionError(this.msg);
+  NoSelectionsFound(this.msg);
+
+  @override
+  String toString() => msg;
+}
+
+class NoMatchFound extends Failure {
+  String msg;
+  NoMatchFound(this.msg);
 
   @override
   String toString() => msg;

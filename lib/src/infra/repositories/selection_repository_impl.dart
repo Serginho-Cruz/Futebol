@@ -15,7 +15,9 @@ class SelectionRepository implements ISelectionRepository {
     try {
       var list = await datasource.getAllSelections();
       return Right(list);
-    } on SelectionError catch (e) {
+    } on NoSelectionsFound catch (e) {
+      return Left(e);
+    } on DataSourceError catch (e) {
       return Left(e);
     } on Exception {
       return Left(DataSourceError(Messages.genericError));
@@ -27,7 +29,7 @@ class SelectionRepository implements ISelectionRepository {
     try {
       var result = await datasource.getSelectionById(id);
       return Right(result);
-    } on SelectionError catch (e) {
+    } on NoSelectionsFound catch (e) {
       return Left(e);
     } on DataSourceError catch (e) {
       return Left(e);
@@ -42,9 +44,9 @@ class SelectionRepository implements ISelectionRepository {
     try {
       var list = await datasource.getSelectionsByGroup(group);
       return Right(list);
-    } on DataSourceError catch (e) {
+    } on NoSelectionsFound catch (e) {
       return Left(e);
-    } on SelectionError catch (e) {
+    } on DataSourceError catch (e) {
       return Left(e);
     } on Exception {
       return Left(DataSourceError(Messages.genericError));
@@ -52,15 +54,32 @@ class SelectionRepository implements ISelectionRepository {
   }
 
   @override
-  Future<Either<Failure, List<Selecao>>> getSelectionByIds(int id, int id2) {
-    // TODO: implement getSelectionByIds
-    throw UnimplementedError();
+  Future<Either<Failure, List<Selecao>>> getSelectionsByIds(
+      List<int> ids) async {
+    try {
+      var result = await datasource.getSelectionsByids(ids);
+      return Right(result);
+    } on NoSelectionsFound catch (e) {
+      return Left(e);
+    } on DataSourceError catch (e) {
+      return Left(e);
+    } on Exception {
+      return Left(DataSourceError(Messages.genericError));
+    }
   }
 
   @override
   Future<Either<Failure, int>> updateSelectionsStatistics(
-      List<Selecao> selections) {
-    // TODO: implement updateSelectionsStatistics
-    throw UnimplementedError();
+      List<Selecao> selections) async {
+    try {
+      var result = await datasource.updateSelectionsStatistics(selections);
+      return Right(result);
+    } on NoSelectionsFound catch (e) {
+      return Left(e);
+    } on DataSourceError catch (e) {
+      return Left(e);
+    } on Exception {
+      return Left(DataSourceError(Messages.genericError));
+    }
   }
 }

@@ -40,15 +40,38 @@ class MatchRepository implements IMatchRepository {
   }
 
   @override
-  Future<Either<Failure, SoccerMatch>> getMatchById(int id) {
-    // TODO: implement getMatchById
-    throw UnimplementedError();
+  Future<Either<Failure, SoccerMatch>> getMatchById(int id) async {
+    try {
+      var result = await datasource.getMatchById(id);
+      return Right(result);
+    } on NoMatchFound catch (e) {
+      return Left(e);
+    } on DataSourceError catch (e) {
+      return Left(e);
+    } on Exception {
+      return Left(DataSourceError(Messages.genericError));
+    }
   }
 
   @override
-  Future<Either<Failure, int>> changeScoreboard(
-      {required int matchId, required int newScore1, required int newScore2}) {
-    // TODO: implement changeScoreboard
-    throw UnimplementedError();
+  Future<Either<Failure, int>> changeScoreboard({
+    required int matchId,
+    required int newScore1,
+    required int newScore2,
+  }) async {
+    try {
+      var result = await datasource.changeScoreboard(
+        matchId: matchId,
+        newScore1: newScore1,
+        newScore2: newScore2,
+      );
+      return Right(result);
+    } on NoMatchFound catch (e) {
+      return Left(e);
+    } on DataSourceError catch (e) {
+      return Left(e);
+    } on Exception {
+      return Left(DataSourceError(Messages.genericError));
+    }
   }
 }
