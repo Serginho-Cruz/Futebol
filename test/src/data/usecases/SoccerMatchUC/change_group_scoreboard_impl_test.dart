@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:futebol/helpers/selection_factory.dart';
 import 'package:futebol/helpers/soccer_match_factory.dart';
 import 'package:futebol/src/data/usecases/Match/change_group_scoreboard_impl.dart';
+import 'package:futebol/src/domain/entities/Match/match_entity.dart';
 import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -15,6 +16,22 @@ void main() {
       repository: repository, updateSelections: updateSelections);
 
   group("Usecase ChangeScoreboard is working rightly", () {
+    late SoccerMatch match;
+
+    setUpAll(() {
+      match = const SoccerMatch(
+        id: 1,
+        idSelection1: 2,
+        idSelection2: 4,
+        local: '',
+        date: '',
+        hour: '',
+        type: 1,
+        score1: 2,
+        score2: 3,
+      );
+      registerFallbackValue(match);
+    });
     test("Returns the same selectionList that came from other usecase",
         () async {
       final selectionList =
@@ -22,6 +39,7 @@ void main() {
 
       when(() => repository.getMatchById(any()))
           .thenAnswer((_) async => Right(MatchFactory.generateMatch()));
+
       when(() => updateSelections(
               newScores: any(named: 'newScores'),
               oldScores: any(named: 'oldScores'),
@@ -29,10 +47,7 @@ void main() {
               selectionId2: any(named: 'selectionId2')))
           .thenAnswer((_) async => Right(selectionList));
 
-      when(() => repository.changeScoreboard(
-              matchId: any(named: 'matchId'),
-              newScore1: any(named: 'newScore1'),
-              newScore2: any(named: 'newScore2')))
+      when(() => repository.changeScoreboard(any()))
           .thenAnswer((_) async => const Right(0));
 
       final result = await usecase(

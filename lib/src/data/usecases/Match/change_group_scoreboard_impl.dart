@@ -4,9 +4,10 @@ import 'package:futebol/src/domain/entities/Selection/selection_entity.dart';
 import 'package:futebol/src/domain/usecases/Selection/update_selection_statistics_interface.dart';
 import 'package:futebol/src/errors/errors_classes/errors_classes.dart';
 
+import '../../../domain/entities/Match/match_entity.dart';
 import '../../../domain/usecases/Match/change_scoreboard_interface.dart';
 
-class ChangeGroupScoreboardUC implements IChangeScoreboard {
+class ChangeGroupScoreboardUC implements IChangeGroupScoreboard {
   final IMatchRepository repository;
   final IUpdateSelectionStatistics updateSelections;
 
@@ -35,9 +36,16 @@ class ChangeGroupScoreboardUC implements IChangeScoreboard {
 
       return result.fold((l) => Left(l), (selections) async {
         var result = await repository.changeScoreboard(
-          matchId: matchId,
-          newScore1: score1,
-          newScore2: score2,
+          SoccerMatch(
+              id: matchId,
+              idSelection1: selectionId1,
+              idSelection2: selectionId2,
+              local: match.local,
+              date: match.date,
+              hour: match.hour,
+              type: match.type,
+              score1: score1,
+              score2: score2),
         );
 
         return result.fold((l) => Left(l), (r) => Right(selections));

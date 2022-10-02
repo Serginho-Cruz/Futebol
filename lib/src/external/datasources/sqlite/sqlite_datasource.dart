@@ -102,27 +102,76 @@ class SQLitedatasource implements IDataSource {
   }
 
   @override
-  Future<List<Selecao>> getSelectionsByids(List<int> ids) {
-    // TODO: implement getSelectionsByids
-    throw UnimplementedError();
+  Future<List<Selecao>> getSelectionsByids(List<int> ids) async {
+    final db = await SQLite.instance.database;
+    var mapList = await db.transaction((txn) => txn.query(
+          SelectionTableSchema.nameTable,
+          where:
+              '${SelectionTableSchema.idColumn} = ? or ${SelectionTableSchema.idColumn} = ?',
+          whereArgs: [ids[0], ids[1]],
+        ));
+
+    if (mapList.isEmpty) {
+      throw NoSelectionsFound(Messages.noSelectionsFound);
+    } else if (mapList.isNotEmpty) {
+      var list = mapList.map((e) => SelecaoMapper.fromMap(e)).toList();
+
+      return list.first.id != ids.first ? list.reversed.toList() : list;
+    } else {
+      throw Exception();
+    }
   }
 
   @override
-  Future<int> updateSelectionsStatistics(List<Selecao> selections) {
-    // TODO: implement updateSelectionsStatistics
-    throw UnimplementedError();
+  Future<SoccerMatch> getMatchById(int id) async {
+    final db = await SQLite.instance.database;
+
+    var mapList = await db.transaction((txn) => txn.query(
+        MatchTableSchema.nameTable,
+        where: '${MatchTableSchema.idColumn} = ?',
+        whereArgs: [id]));
+
+    if (mapList.isEmpty) {
+      throw NoMatchFound(Messages.noMatchFound);
+    } else if (mapList.isNotEmpty) {
+      return MatchMapper.fromMap(mapList.first);
+    } else {
+      throw Exception();
+    }
   }
 
   @override
-  Future<int> changeScoreboard(
-      {required int matchId, required int newScore1, required int newScore2}) {
-    // TODO: implement changeScoreboard
-    throw UnimplementedError();
+  Future<int> updateSelectionsStatistics(List<Selecao> selections) async {
+    final db = await SQLite.instance.database;
+
+    try {
+      await db.transaction((txn) async {
+        for (var selection in selections) {
+          await txn.update(
+              SelectionTableSchema.nameTable, SelecaoMapper.toMap(selection),
+              where: '${SelectionTableSchema.idColumn} = ?',
+              whereArgs: [selection.id!]);
+        }
+      });
+
+      return 0;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<SoccerMatch> getMatchById(int id) {
-    // TODO: implement getMatchById
-    throw UnimplementedError();
+  Future<int> changeScoreboard(SoccerMatch newMatch) async {
+    final db = await SQLite.instance.database;
+
+    try {
+      await db.transaction((txn) async => await txn.update(
+          MatchTableSchema.nameTable, MatchMapper.toMap(newMatch),
+          where: '${MatchTableSchema.idColumn} = ?', whereArgs: [newMatch.id]));
+
+      return 0;
+    } catch (e) {
+      rethrow;
+    }
   }
 }

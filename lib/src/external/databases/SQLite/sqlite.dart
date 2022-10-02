@@ -5,7 +5,7 @@ import '../../../domain/entities/Selection/selection_entity.dart';
 import '../../../domain/entities/Selection/selection_mapper.dart';
 import '../../../errors/errors_classes/errors_classes.dart';
 import '../../../errors/errors_messages_classes/errors_messages.dart';
-import '../scritps_db.dart';
+import '../scripts_db.dart';
 import 'tables_schema.dart';
 
 class SQLite {

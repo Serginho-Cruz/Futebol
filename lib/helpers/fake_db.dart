@@ -13,7 +13,7 @@ class FakeDB {
 
   Future<List<Map<String, dynamic>>> getAll() async {
     if (selecoes.isEmpty) {
-      throw EmptyList(Messages.noExistSelections);
+      throw EmptyList(Messages.noSelectionsFound);
     }
 
     return selecoes.map((e) => SelecaoMapper.toMap(e)).toList();
@@ -22,7 +22,7 @@ class FakeDB {
   Future<List<Map<String, dynamic>>> getByGroup(String group) async {
     List<Map<String, dynamic>> list = List.empty(growable: true);
     if (selecoes.isEmpty) {
-      throw EmptyList(Messages.noExistSelections);
+      throw EmptyList(Messages.noSelectionsFound);
     }
 
     for (var element in selecoes) {
@@ -40,7 +40,7 @@ class FakeDB {
   Future<Map<String, dynamic>> getSelecaoById(int id) async {
     Selecao? selecao;
     if (selecoes.isEmpty) {
-      throw EmptyList(Messages.noExistSelections);
+      throw EmptyList(Messages.noSelectionFound);
     }
 
     for (var element in selecoes) {

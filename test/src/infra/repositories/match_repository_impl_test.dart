@@ -86,29 +86,36 @@ void main() {
       });
     });
     group("Method changeScoreboard is working", () {
+      late SoccerMatch match;
+      setUpAll(() {
+        match = const SoccerMatch(
+          id: 1,
+          idSelection1: 2,
+          idSelection2: 4,
+          local: '',
+          date: '',
+          hour: '',
+          type: 1,
+          score1: 2,
+          score2: 3,
+        );
+        registerFallbackValue(match);
+      });
       test("Returns an int when no errors occur", () async {
-        when(() => datasource.changeScoreboard(
-              matchId: any(named: 'matchId'),
-              newScore1: any(named: 'newScore1'),
-              newScore2: any(named: 'newScore2'),
-            )).thenAnswer((_) async => 0);
+        when(() => datasource.changeScoreboard(any()))
+            .thenAnswer((_) async => 0);
 
-        var result = await repository.changeScoreboard(
-            matchId: 1, newScore1: 2, newScore2: 3);
+        var result = await repository.changeScoreboard(match);
 
         expect(result.isRight(), isTrue);
         expect(result.fold(id, id), isA<int>());
         expect(result.fold(id, id), equals(0));
       });
       test("Returns a Failure when datasource throws", () async {
-        when(() => datasource.changeScoreboard(
-              matchId: any(named: 'matchId'),
-              newScore1: any(named: 'newScore1'),
-              newScore2: any(named: 'newScore2'),
-            )).thenThrow(DataSourceError(msg));
+        when(() => datasource.changeScoreboard(any()))
+            .thenThrow(DataSourceError(msg));
 
-        var result = await repository.changeScoreboard(
-            matchId: 1, newScore1: 2, newScore2: 3);
+        var result = await repository.changeScoreboard(match);
 
         expect(result.isLeft(), isTrue);
         expect(result.fold(id, id), isA<Failure>());
