@@ -18,12 +18,13 @@ dependencies:
   faker: ^2.0.0
   sqflite: ^2.0.3+1
   path:
+  flutter_triple:
+  flutter_modular:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail:
-  build_runner:
 
   flutter_lints: ^2.0.0
 
