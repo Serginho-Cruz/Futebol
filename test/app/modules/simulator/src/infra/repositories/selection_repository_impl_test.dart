@@ -91,20 +91,20 @@ void main() {
     group("Method getSelectionsByIds is working", () {
       test("Returns a list of Selections when no errors occur", () async {
         var list = List.generate(2, (_) => FakeFactory.generateSelecao());
-        when(() => datasource.getSelectionsByids(any()))
+        when(() => datasource.getSelectionsByids(any(), any()))
             .thenAnswer((_) async => list);
 
-        var result = await repository.getSelectionsByIds([1, 2]);
+        var result = await repository.getSelectionsByIds(1, 2);
 
         expect(result.isRight(), isTrue);
         expect(result.fold(id, id), isA<List<Selecao>>());
         expect(result.fold(id, id), equals(list));
       });
       test("Returns a Failure when datasource throws that", () async {
-        when(() => datasource.getSelectionsByids(any()))
+        when(() => datasource.getSelectionsByids(any(), any()))
             .thenThrow(DataSourceError(message));
 
-        var result = await repository.getSelectionsByIds([1, 2]);
+        var result = await repository.getSelectionsByIds(1, 2);
         expect(result.fold(id, id), isA<Failure>());
         expect(result.fold((l) => l.toString(), id), equals(message));
       });

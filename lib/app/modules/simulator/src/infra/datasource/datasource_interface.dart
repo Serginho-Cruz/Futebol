@@ -9,7 +9,7 @@ abstract class IDataSource {
   Future<List<SoccerMatch>> getMatchsByType(int type);
   Future<SoccerMatch> getMatchById(int id);
   Future<List<int>> changeScoreboard(SoccerMatch match);
-  Future<List<Selecao>> getSelectionsByids(List<int> ids);
+  Future<List<Selecao>> getSelectionsByids(int id1, int id2);
   Future<List<Selecao>> updateSelectionsStatistics(
     List<Selecao> selections,
     String group,

@@ -18,7 +18,7 @@ void main() {
           id: 1, gp: 3, gc: 3, pontos: 10, vitorias: 4),
       FakeFactory.generateWithData(id: 2, gp: 3, gc: 3, pontos: 4, vitorias: 2),
     ];
-    when(() => repository.getSelectionsByIds(any()))
+    when(() => repository.getSelectionsByIds(any(), any()))
         .thenAnswer((_) async => Right(selecoes));
     when(() => repository.updateSelectionsStatistics(any(), any()))
         .thenAnswer((_) async => Right(selecoes));

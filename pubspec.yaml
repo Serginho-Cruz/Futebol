@@ -15,7 +15,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
   equatable: ^2.0.5
-  faker: ^2.0.0
   sqflite: ^2.0.3+1
   path:
   flutter_triple:
@@ -25,10 +24,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail:
+  faker: ^2.0.0
 
   flutter_lints: ^2.0.0
 
 flutter:
-
+  assets: 
+    - images/flags/
 
   uses-material-design: true

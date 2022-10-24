@@ -55,9 +55,9 @@ class SelectionRepository implements ISelectionRepository {
 
   @override
   Future<Either<Failure, List<Selecao>>> getSelectionsByIds(
-      List<int> ids) async {
+      int id1, int id2) async {
     try {
-      var result = await datasource.getSelectionsByids(ids);
+      var result = await datasource.getSelectionsByids(id1, id2);
       return Right(result);
     } on NoSelectionsFound catch (e) {
       return Left(e);

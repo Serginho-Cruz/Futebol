@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Selecao extends Equatable {
-  final int? id;
+  final int id;
   final String nome;
   final String bandeira;
   final int pontos;
@@ -11,7 +11,7 @@ class Selecao extends Equatable {
   final String grupo;
 
   const Selecao({
-    this.id,
+    required this.id,
     required this.nome,
     required this.bandeira,
     this.pontos = 0,

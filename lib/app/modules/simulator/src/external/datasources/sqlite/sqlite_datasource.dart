@@ -12,8 +12,10 @@ class SQLitedatasource implements IDataSource {
   @override
   Future<List<Selecao>> getAllSelections() async {
     final db = await SQLite.instance.database;
-    final list = await db
-        .transaction((txn) => txn.query(SelectionTableSchema.nameTable));
+    final list = await db.transaction((txn) => txn.query(
+          SelectionTableSchema.nameTable,
+          orderBy: MatchTableSchema.groupColumn,
+        ));
 
     if (list.isNotEmpty) {
       return list.map((e) => SelecaoMapper.fromMap(e)).toList();
@@ -84,7 +86,7 @@ class SQLitedatasource implements IDataSource {
   @override
   Future<List<SoccerMatch>> getMatchsByType(int type) async {
     final db = await SQLite.instance.database;
-    final mapList = await db.transaction(
+    final matchs = await db.transaction(
       (txn) => txn.query(
         MatchTableSchema.nameTable,
         where: '${MatchTableSchema.typeColumn} = ?',
@@ -92,23 +94,23 @@ class SQLitedatasource implements IDataSource {
       ),
     );
 
-    if (mapList.isEmpty) {
+    if (matchs.isEmpty) {
       throw NoMatchsFound(Messages.noMatchsFound);
-    } else if (mapList.isNotEmpty) {
-      return mapList.map((e) => MatchMapper.fromMap(e)).toList();
+    } else if (matchs.isNotEmpty) {
+      return matchs.map((e) => MatchMapper.fromMap(e)).toList();
     } else {
       throw DataSourceError(Messages.genericError);
     }
   }
 
   @override
-  Future<List<Selecao>> getSelectionsByids(List<int> ids) async {
+  Future<List<Selecao>> getSelectionsByids(int id1, int id2) async {
     final db = await SQLite.instance.database;
     var mapList = await db.transaction((txn) => txn.query(
           SelectionTableSchema.nameTable,
           where:
               '${SelectionTableSchema.idColumn} = ? or ${SelectionTableSchema.idColumn} = ?',
-          whereArgs: [ids[0], ids[1]],
+          whereArgs: [id1, id2],
         ));
 
     if (mapList.isEmpty) {
@@ -116,7 +118,7 @@ class SQLitedatasource implements IDataSource {
     } else if (mapList.isNotEmpty) {
       var list = mapList.map((e) => SelecaoMapper.fromMap(e)).toList();
 
-      return list.first.id != ids.first ? list.reversed.toList() : list;
+      return list.first.id != id1 ? list.reversed.toList() : list;
     } else {
       throw Exception();
     }
