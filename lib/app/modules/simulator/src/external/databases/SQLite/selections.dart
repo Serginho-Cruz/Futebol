@@ -31,5 +31,5 @@ const List<Map<String, dynamic>> selections = [
   {'nome': 'Gana', 'bandeira': 'gana', 'grupo': 'H'},
   {'nome': 'Portugal', 'bandeira': 'portugal', 'grupo': 'H'},
   {'nome': 'Uruguai', 'bandeira': 'uruguai', 'grupo': 'H'},
-  {'nome': 'N/D', 'bandeira': 'undefined', 'grupo': ''},
+  {'nome': 'N/D', 'bandeira': 'undefined', 'grupo': 'undefined'},
 ];
