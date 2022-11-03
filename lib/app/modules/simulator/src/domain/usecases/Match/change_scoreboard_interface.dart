@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:futebol/app/modules/simulator/src/domain/entities/Match/match_entity.dart';
+import '../../entities/Match/match_entity.dart';
 import '../../../errors/errors_classes/errors_classes.dart';
 
 abstract class IChangeScoreboard {

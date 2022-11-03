@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:futebol/app/modules/simulator/src/presenter/widgets/selection_data.dart';
-import 'package:futebol/app/modules/simulator/src/presenter/widgets/table_index.dart';
+import 'selection_data.dart';
+import 'table_index.dart';
 
 import '../../domain/entities/Selection/selection_entity.dart';
 
 class GroupTable extends StatelessWidget {
   final List<Selecao> selections;
   final String group;
+  final void Function()? onTap;
 
   const GroupTable({
     super.key,
     required this.group,
     required this.selections,
+    this.onTap,
   });
 
   @override
@@ -29,58 +31,63 @@ class GroupTable extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: const Color.fromRGBO(34, 34, 59, 1.0),
-        elevation: 2.9,
-        margin: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.025,
-        ),
-        child: Column(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
-                ),
-                color: Color.fromRGBO(115, 2, 23, 1),
-              ),
-              height: 40.0,
-              child: Center(
-                child: Text(
-                  'Grupo $group',
-                  style: const TextStyle(
-                    color: Color.fromRGBO(217, 178, 130, 0.81),
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
+      child: GestureDetector(
+        onTap: onTap,
+        child: SizedBox(
+          height: 315,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            elevation: 5.0,
+            margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.025,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                    ),
+                    color: Color.fromRGBO(115, 2, 23, 1),
                   ),
-                  textAlign: TextAlign.center,
+                  height: 40.0,
+                  child: Center(
+                    child: Text(
+                      'Grupo $group',
+                      style: const TextStyle(
+                        color: Color.fromRGBO(217, 178, 130, 0.81),
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-              ),
+                Table(
+                  columnWidths: {
+                    0: FixedColumnWidth(width * 0.35),
+                    1: FixedColumnWidth(width * 0.12),
+                    2: FixedColumnWidth(width * 0.12),
+                    3: FixedColumnWidth(width * 0.12),
+                    4: FixedColumnWidth(width * 0.12),
+                    5: FixedColumnWidth(width * 0.12),
+                    6: FixedColumnWidth(width * 0.12),
+                  },
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: rows,
+                  border: TableBorder.all(
+                    style: BorderStyle.solid,
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(30.0),
+                        bottomRight: Radius.circular(30.0)),
+                  ),
+                ),
+              ],
             ),
-            Table(
-              columnWidths: {
-                0: FixedColumnWidth(width * 0.35),
-                1: FixedColumnWidth(width * 0.12),
-                2: FixedColumnWidth(width * 0.12),
-                3: FixedColumnWidth(width * 0.12),
-                4: FixedColumnWidth(width * 0.12),
-                5: FixedColumnWidth(width * 0.12),
-                6: FixedColumnWidth(width * 0.12),
-              },
-              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              children: rows,
-              border: TableBorder.all(
-                style: BorderStyle.solid,
-                borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(30.0),
-                    bottomRight: Radius.circular(30.0)),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -115,10 +122,6 @@ TableRow _generateLastRow(Selecao selection) {
             child: Text(
               selection.nome,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: Color.fromRGBO(217, 178, 130, 1),
-              ),
             ),
           ),
         ],
@@ -173,10 +176,6 @@ TableRow _generateRow(Selecao selection, double width) {
             child: Text(
               selection.nome,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: Color.fromRGBO(217, 178, 130, 0.81),
-              ),
             ),
           ),
         ],

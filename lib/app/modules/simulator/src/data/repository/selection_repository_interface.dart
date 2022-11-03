@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+
 import '../../domain/entities/Selection/selection_entity.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 

@@ -1,7 +1,5 @@
 import 'package:dartz/dartz.dart';
 import '../../repository/match_repository_interface.dart';
-import '../../../domain/entities/Selection/selection_entity.dart';
-import '../../../domain/usecases/Selection/update_selection_statistics_interface.dart';
 import '../../../errors/errors_classes/errors_classes.dart';
 
 import '../../../domain/entities/Match/match_entity.dart';
@@ -34,7 +32,7 @@ class ChangeScoreboardUC implements IChangeScoreboard {
         score1: score1,
         score2: score2,
         extratimeScore1: extratimeScores?.first,
-        extraTimeScore2: extratimeScores?[1],
+        extratimeScore2: extratimeScores?[1],
         penaltyScore1: penaltyScores?.first,
         penaltyScore2: penaltyScores?[1],
       ),

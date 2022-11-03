@@ -2,8 +2,8 @@ import 'package:dartz/dartz.dart';
 
 import '../../data/repository/selection_repository_interface.dart';
 import '../../domain/entities/Selection/selection_entity.dart';
-import '../../errors/errors_messages_classes/errors_messages.dart';
 import '../../errors/errors_classes/errors_classes.dart';
+import '../../errors/errors_messages_classes/errors_messages.dart';
 import '../datasource/datasource_interface.dart';
 
 class SelectionRepository implements ISelectionRepository {

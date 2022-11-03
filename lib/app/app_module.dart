@@ -1,5 +1,5 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:futebol/app/modules/simulator/simulator_module.dart';
+import 'modules/simulator/simulator_module.dart';
 
 class AppModule extends Module {
   @override

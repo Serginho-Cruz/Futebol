@@ -156,7 +156,7 @@ class SQLitedatasource implements IDataSource {
             SelectionTableSchema.nameTable,
             SelecaoMapper.toMap(selection),
             where: '${SelectionTableSchema.idColumn} = ?',
-            whereArgs: [selection.id!],
+            whereArgs: [selection.id],
           );
         }
       });

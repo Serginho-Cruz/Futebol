@@ -1,10 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dartz/dartz.dart';
 
-import 'package:futebol/app/modules/simulator/src/data/repository/selection_repository_interface.dart';
-import 'package:futebol/app/modules/simulator/src/domain/entities/Selection/selection_entity.dart';
-import 'package:futebol/app/modules/simulator/src/domain/usecases/Selection/update_selection_statistics_interface.dart';
-import 'package:futebol/app/modules/simulator/src/errors/errors_classes/errors_classes.dart';
+import '../../../domain/entities/Selection/selection_entity.dart';
+import '../../../domain/usecases/Selection/update_selection_statistics_interface.dart';
+import '../../../errors/errors_classes/errors_classes.dart';
+import '../../repository/selection_repository_interface.dart';
 
 class UpdateSelectionsStatisticsUC implements IUpdateSelectionStatistics {
   final ISelectionRepository repository;

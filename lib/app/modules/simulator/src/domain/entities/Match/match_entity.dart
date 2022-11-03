@@ -10,7 +10,7 @@ class SoccerMatch {
   final int? score1;
   final int? score2;
   final int? extratimeScore1;
-  final int? extraTimeScore2;
+  final int? extratimeScore2;
   final int? penaltyScore1;
   final int? penaltyScore2;
 
@@ -26,7 +26,7 @@ class SoccerMatch {
     this.score1,
     this.score2,
     this.extratimeScore1,
-    this.extraTimeScore2,
+    this.extratimeScore2,
     this.penaltyScore1,
     this.penaltyScore2,
   });

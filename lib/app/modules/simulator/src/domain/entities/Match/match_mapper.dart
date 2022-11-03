@@ -13,7 +13,7 @@ abstract class MatchMapper {
       'placar1': match.score1,
       'placar2': match.score2,
       'placar1_extra': match.extratimeScore1,
-      'placar2_extra': match.extraTimeScore2,
+      'placar2_extra': match.extratimeScore2,
       'placar1_penaltis': match.penaltyScore1,
       'placar2_penaltis': match.penaltyScore2,
       'grupo': match.group,
@@ -31,7 +31,7 @@ abstract class MatchMapper {
       score2: map['placar2'] == null ? null : map['placar2'] as int,
       extratimeScore1:
           map['placar1_extra'] == null ? null : map['placar1_extra'] as int,
-      extraTimeScore2:
+      extratimeScore2:
           map['placar2_extra'] == null ? null : map['placar2_extra'] as int,
       penaltyScore1: map['placar1_penaltis'] == null
           ? null
