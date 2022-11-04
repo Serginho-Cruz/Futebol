@@ -21,7 +21,7 @@ class GroupTable extends StatelessWidget {
     List<TableRow> rows = [];
     var width = MediaQuery.of(context).size.width;
 
-    rows.add(_generateIndexRow());
+    rows.add(_generateIndexRow(context));
 
     for (var selection in selections) {
       selection.id % 4 != 0
@@ -57,8 +57,8 @@ class GroupTable extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Grupo $group',
-                      style: const TextStyle(
-                        color: Color.fromRGBO(217, 178, 130, 0.81),
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                         fontSize: 22.0,
                         fontWeight: FontWeight.bold,
                       ),
@@ -135,12 +135,12 @@ TableRow _generateLastRow(Selecao selection) {
   );
 }
 
-TableRow _generateIndexRow() {
-  return const TableRow(
+TableRow _generateIndexRow(BuildContext context) {
+  return TableRow(
     decoration: BoxDecoration(
-      color: Color.fromRGBO(115, 18, 63, 1),
+      color: Theme.of(context).colorScheme.secondary,
     ),
-    children: [
+    children: const [
       TableIndex(text: 'Times'),
       TableIndex(text: 'P'),
       TableIndex(text: 'V'),
@@ -164,7 +164,6 @@ TableRow _generateRow(Selecao selection, double width) {
             width: 50.0,
             height: 60.0,
             decoration: BoxDecoration(
-              color: Colors.blue,
               shape: BoxShape.circle,
               image: DecorationImage(
                 image: AssetImage('images/flags/${selection.bandeira}.png'),
