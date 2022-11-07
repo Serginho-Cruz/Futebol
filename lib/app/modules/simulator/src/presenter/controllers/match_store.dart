@@ -49,13 +49,12 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     setLoading(false);
   }
 
-  Future<List<int>?> changeGroupScoreboard({
+  Future<List<int?>?> changeGroupScoreboard({
     required SoccerMatch match,
     required int score1,
     required int score2,
   }) async {
-    List<int>? oldScores;
-    setLoading(true);
+    List<int?>? oldScores;
 
     var result = await _changeScoreboard(
       match: match,
@@ -68,8 +67,6 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     }, (scores) {
       oldScores = scores;
     });
-
-    setLoading(false);
     return oldScores;
   }
 

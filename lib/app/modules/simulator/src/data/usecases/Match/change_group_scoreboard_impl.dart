@@ -13,7 +13,7 @@ class ChangeScoreboardUC implements IChangeScoreboard {
   });
 
   @override
-  Future<Either<Failure, List<int>>> call({
+  Future<Either<Failure, List<int?>>> call({
     required int score1,
     required int score2,
     required SoccerMatch match,

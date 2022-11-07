@@ -7,5 +7,5 @@ abstract class IMatchRepository {
   Future<Either<Failure, List<SoccerMatch>>> getMatchsByType(int type);
   Future<Either<Failure, List<SoccerMatch>>> getMatchsByGroup(String group);
   Future<Either<Failure, SoccerMatch>> getMatchById(int id);
-  Future<Either<Failure, List<int>>> changeScoreboard(SoccerMatch newMatch);
+  Future<Either<Failure, List<int?>>> changeScoreboard(SoccerMatch newMatch);
 }

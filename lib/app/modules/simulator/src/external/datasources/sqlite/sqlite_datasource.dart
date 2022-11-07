@@ -150,16 +150,14 @@ class SQLitedatasource implements IDataSource {
     final db = await SQLite.instance.database;
 
     try {
-      await db.transaction((txn) async {
-        for (var selection in selections) {
-          await txn.update(
-            SelectionTableSchema.nameTable,
-            SelecaoMapper.toMap(selection),
-            where: '${SelectionTableSchema.idColumn} = ?',
-            whereArgs: [selection.id],
-          );
-        }
-      });
+      for (var selection in selections) {
+        await db.update(
+          SelectionTableSchema.nameTable,
+          SelecaoMapper.toMap(selection),
+          where: '${SelectionTableSchema.idColumn} = ?',
+          whereArgs: [selection.id],
+        );
+      }
 
       return await getSelectionsByGroup(group);
     } catch (e) {
@@ -168,30 +166,32 @@ class SQLitedatasource implements IDataSource {
   }
 
   @override
-  Future<List<int>> changeScoreboard(SoccerMatch match) async {
+  Future<List<int?>> changeScoreboard(SoccerMatch match) async {
     final db = await SQLite.instance.database;
     try {
       var oldScoresMap = await db.query(
         MatchTableSchema.nameTable,
         columns: [
-          MatchTableSchema.idSelection1Column,
-          MatchTableSchema.idSelection2Column,
+          MatchTableSchema.score1Column,
+          MatchTableSchema.score2Column,
         ],
         where: '${MatchTableSchema.idColumn} = ?',
         whereArgs: [match.id],
       );
 
       if (oldScoresMap.isNotEmpty) {
-        await db.transaction(
-          (txn) async => await txn.update(
-            MatchTableSchema.nameTable,
-            MatchMapper.toMap(match),
-            where: '${MatchTableSchema.idColumn} = ?',
-            whereArgs: [match.id],
-          ),
+        await db.update(
+          MatchTableSchema.nameTable,
+          MatchMapper.toMap(match),
+          where: '${MatchTableSchema.idColumn} = ?',
+          whereArgs: [match.id],
         );
-
-        return oldScoresMap.map((e) => e as int).toList();
+        List<int?> oldScores = [];
+        for (var map in oldScoresMap) {
+          oldScores.add(map['placar1'] as int?);
+          oldScores.add(map['placar2'] as int?);
+        }
+        return oldScores;
       } else {
         throw NoMatchFound(Messages.noMatchFound);
       }

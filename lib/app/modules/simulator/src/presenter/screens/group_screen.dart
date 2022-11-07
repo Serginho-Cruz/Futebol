@@ -46,27 +46,31 @@ class _GroupScreenState extends State<GroupScreen> {
             onError: (context, error) => Text(error.toString()),
             onState: (context, matchs) {
               List<MatchCard> cards = [];
-              for (var element in matchs) {
+
+              for (var match in matchs) {
                 cards.add(
                   MatchCard(
                     match: SoccerMatchModel(
-                      match: element,
+                      match: match,
                       selection1: selections.firstWhere(
-                          (selection) => selection.id == element.idSelection1),
+                          (selection) => selection.id == match.idSelection1),
                       selection2: selections.firstWhere(
-                          (selection) => selection.id == element.idSelection2),
+                          (selection) => selection.id == match.idSelection2),
                     ),
                   ),
                 );
               }
-              return Column(
-                children: [
-                  GroupTable(
-                    group: widget.group,
-                    selections: selections,
-                  ),
-                  Expanded(
-                    child: GridView.count(
+
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GroupTable(
+                      group: widget.group,
+                      selections: selections,
+                    ),
+                    GridView.count(
+                      shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       crossAxisSpacing: 15.0,
                       mainAxisSpacing: 15.0,
@@ -74,8 +78,8 @@ class _GroupScreenState extends State<GroupScreen> {
                       physics: const BouncingScrollPhysics(),
                       children: cards,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             },
           );

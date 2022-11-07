@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MatchPoint extends StatelessWidget {
-  const MatchPoint({super.key});
+  MatchPoint({super.key, required this.onChanged});
+
+  void Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       textAlign: TextAlign.center,
       style: const TextStyle(fontSize: 12.0, color: Colors.black),
       decoration: InputDecoration(

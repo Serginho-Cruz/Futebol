@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:futebol/app/modules/simulator/src/domain/models/match_model.dart';
+import 'package:futebol/app/modules/simulator/src/presenter/controllers/match_store.dart';
+import 'package:futebol/app/modules/simulator/src/presenter/controllers/selection_store.dart';
 
 import 'match_card_image.dart';
 import 'match_point.dart';
@@ -11,6 +14,9 @@ class MatchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int? point1;
+    int? point2;
+
     return Card(
       borderOnForeground: true,
       color: Theme.of(context).colorScheme.surface,
@@ -53,16 +59,74 @@ class MatchCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MatchCardImage(selection: match.selection1),
-              const Flexible(
+              Flexible(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 17.5),
-                  child: MatchPoint(),
+                  padding:
+                      const EdgeInsets.only(left: 4.0, right: 4.0, top: 17.5),
+                  child: MatchPoint(
+                    onChanged: (str) async {
+                      if (str.isNotEmpty) {
+                        point1 = int.tryParse(str);
+
+                        if (point2 != null) {
+                          List<int?>? oldScores =
+                              await Modular.get<MatchStore>()
+                                  .changeGroupScoreboard(
+                            match: match,
+                            score1: point1!,
+                            score2: point2!,
+                          );
+
+                          if (oldScores != null) {
+                            await Modular.get<SelectionStore>()
+                                .updateStatistics(
+                              selectionId1: match.idSelection1,
+                              selectionId2: match.idSelection2,
+                              group: match.group!,
+                              newScores: [point1!, point2!],
+                              oldScores: oldScores,
+                            );
+                          }
+                        }
+                      } else {
+                        point1 = null;
+                      }
+                    },
+                  ),
                 ),
               ),
-              const Flexible(
+              Flexible(
                 child: Padding(
-                  padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 17.5),
-                  child: MatchPoint(),
+                  padding:
+                      const EdgeInsets.only(left: 4.0, right: 4.0, top: 17.5),
+                  child: MatchPoint(
+                    onChanged: (str) async {
+                      if (str.trim().isNotEmpty) {
+                        point2 = int.tryParse(str);
+
+                        if (point1 != null) {
+                          List<int?>? oldScores =
+                              await Modular.get<MatchStore>()
+                                  .changeGroupScoreboard(
+                            match: match,
+                            score1: point1!,
+                            score2: point2!,
+                          );
+
+                          if (oldScores != null) {
+                            Modular.get<SelectionStore>().updateStatistics(
+                                selectionId1: match.idSelection1,
+                                selectionId2: match.idSelection2,
+                                group: match.group!,
+                                newScores: [point1!, point2!],
+                                oldScores: oldScores);
+                          }
+                        }
+                      } else {
+                        point2 = null;
+                      }
+                    },
+                  ),
                 ),
               ),
               MatchCardImage(selection: match.selection2),

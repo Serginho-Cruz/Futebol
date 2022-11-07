@@ -54,7 +54,8 @@ class MatchRepository implements IMatchRepository {
   }
 
   @override
-  Future<Either<Failure, List<int>>> changeScoreboard(SoccerMatch match) async {
+  Future<Either<Failure, List<int?>>> changeScoreboard(
+      SoccerMatch match) async {
     try {
       var result = await datasource.changeScoreboard(match);
       return Right(result);
