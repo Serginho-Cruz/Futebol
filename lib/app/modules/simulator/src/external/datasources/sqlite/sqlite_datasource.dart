@@ -29,13 +29,15 @@ class SQLitedatasource implements IDataSource {
   @override
   Future<List<Selecao>> getSelectionsByGroup(String group) async {
     final db = await SQLite.instance.database;
-    final list = await db.transaction(
-      (txn) => txn.query(
-        SelectionTableSchema.nameTable,
-        where: '${SelectionTableSchema.groupColumn} = ?',
-        whereArgs: [group],
-      ),
+
+    final listTest = await getAllSelections();
+    print(listTest);
+    final list = await db.query(
+      SelectionTableSchema.nameTable,
+      where: '${SelectionTableSchema.groupColumn} = ?',
+      whereArgs: [group],
     );
+
     if (list.isEmpty) {
       throw NoSelectionsFound(Messages.noGroupSelections);
     } else if (list.isNotEmpty) {

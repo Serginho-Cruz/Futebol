@@ -9,6 +9,7 @@ class SoccerMatchModel extends SoccerMatch {
   late final String local;
   late final String date;
   late final String hour;
+  late final String? group;
   late final int type;
   late final int? score1;
   late final int? score2;
@@ -29,6 +30,7 @@ class SoccerMatchModel extends SoccerMatch {
           date: match.date,
           hour: match.hour,
           type: match.type,
+          group: match.group,
           score1: match.score1,
           score2: match.score2,
           extratimeScore1: match.extratimeScore1,
@@ -41,6 +43,7 @@ class SoccerMatchModel extends SoccerMatch {
     local = match.local;
     hour = match.hour;
     type = match.type;
+    group = match.group;
     score1 = match.score1;
     score2 = match.score2;
     extratimeScore1 = match.extratimeScore1;

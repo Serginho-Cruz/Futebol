@@ -64,6 +64,7 @@ class MatchCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.only(left: 4.0, right: 4.0, top: 17.5),
                   child: MatchPoint(
+                    point: match.score1?.toString(),
                     onChanged: (str) async {
                       if (str.isNotEmpty) {
                         point1 = int.tryParse(str);
@@ -100,6 +101,7 @@ class MatchCard extends StatelessWidget {
                   padding:
                       const EdgeInsets.only(left: 4.0, right: 4.0, top: 17.5),
                   child: MatchPoint(
+                    point: match.score2?.toString(),
                     onChanged: (str) async {
                       if (str.trim().isNotEmpty) {
                         point2 = int.tryParse(str);

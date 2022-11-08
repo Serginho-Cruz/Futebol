@@ -56,8 +56,6 @@ class SelectionStore extends NotifierStore<Failure, List<Selecao>> {
     required List<int> newScores,
     required List<int?> oldScores,
   }) async {
-    setLoading(true);
-
     var result = await _updateStatistics(
       group: group,
       newScores: newScores,
@@ -71,7 +69,5 @@ class SelectionStore extends NotifierStore<Failure, List<Selecao>> {
     }, (selections) {
       update(selections);
     });
-
-    setLoading(false);
   }
 }

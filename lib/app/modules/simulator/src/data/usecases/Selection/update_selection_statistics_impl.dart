@@ -125,7 +125,7 @@ class UpdateSelectionsStatisticsUC implements IUpdateSelectionStatistics {
         group,
       );
 
-      return result.fold((l) => Left(l), (r) => Right(selectionsToUpdate));
+      return result.fold((l) => Left(l), (r) => Right(r));
     });
   }
 

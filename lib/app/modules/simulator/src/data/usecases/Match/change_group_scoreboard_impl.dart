@@ -29,6 +29,7 @@ class ChangeScoreboardUC implements IChangeScoreboard {
         date: match.date,
         hour: match.hour,
         type: match.type,
+        group: match.group,
         score1: score1,
         score2: score2,
         extratimeScore1: extratimeScores?.first,
