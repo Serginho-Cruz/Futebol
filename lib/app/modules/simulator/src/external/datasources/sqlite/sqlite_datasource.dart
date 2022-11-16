@@ -14,7 +14,13 @@ class SQLitedatasource implements IDataSource {
     final db = await SQLite.instance.database;
     final list = await db.transaction((txn) => txn.query(
           SelectionTableSchema.nameTable,
-          orderBy: MatchTableSchema.groupColumn,
+          orderBy: '''
+          ${SelectionTableSchema.groupColumn},
+          ${SelectionTableSchema.pointsColumn} desc, 
+          ${SelectionTableSchema.victoriesColumn} desc, 
+          ${SelectionTableSchema.gpColumn} desc,
+          ${SelectionTableSchema.idColumn}
+          ''',
         ));
 
     if (list.isNotEmpty) {
@@ -30,10 +36,14 @@ class SQLitedatasource implements IDataSource {
   Future<List<Selecao>> getSelectionsByGroup(String group) async {
     final db = await SQLite.instance.database;
 
-    final listTest = await getAllSelections();
-    print(listTest);
     final list = await db.query(
       SelectionTableSchema.nameTable,
+      orderBy: '''
+          ${SelectionTableSchema.pointsColumn} desc, 
+          ${SelectionTableSchema.victoriesColumn} desc, 
+          ${SelectionTableSchema.gpColumn} desc,
+          ${SelectionTableSchema.idColumn}
+          ''',
       where: '${SelectionTableSchema.groupColumn} = ?',
       whereArgs: [group],
     );
@@ -68,12 +78,10 @@ class SQLitedatasource implements IDataSource {
   @override
   Future<List<SoccerMatch>> getMatchsByGroup(String group) async {
     final db = await SQLite.instance.database;
-    final mapList = await db.transaction(
-      (txn) => txn.query(
-        MatchTableSchema.nameTable,
-        where: '${MatchTableSchema.groupColumn} = ?',
-        whereArgs: [group],
-      ),
+    final mapList = await db.query(
+      MatchTableSchema.nameTable,
+      where: '${MatchTableSchema.groupColumn} = ?',
+      whereArgs: [group],
     );
 
     if (mapList.isNotEmpty) {
@@ -153,11 +161,13 @@ class SQLitedatasource implements IDataSource {
 
     try {
       for (var selection in selections) {
-        await db.update(
-          SelectionTableSchema.nameTable,
-          SelecaoMapper.toMap(selection),
-          where: '${SelectionTableSchema.idColumn} = ?',
-          whereArgs: [selection.id],
+        await db.transaction(
+          (txn) => txn.update(
+            SelectionTableSchema.nameTable,
+            SelecaoMapper.toMap(selection),
+            where: '${SelectionTableSchema.idColumn} = ?',
+            whereArgs: [selection.id],
+          ),
         );
       }
 
@@ -200,5 +210,36 @@ class SQLitedatasource implements IDataSource {
     } catch (e) {
       rethrow;
     }
+  }
+
+  @override
+  Future<void> updateRound16Matchs({
+    required List<Selecao> selections,
+    required int idMatch1,
+    required int idMatch2,
+  }) async {
+    final db = await SQLite.instance.database;
+
+    await db.transaction((txn) async {
+      int count = await txn.rawUpdate(
+        '''
+        UPDATE ${MatchTableSchema.nameTable} SET ${MatchTableSchema.idSelection1Column} = ? 
+        WHERE ${MatchTableSchema.idColumn} = ?
+      ''',
+        [selections.first.id, idMatch1],
+      );
+
+      int count2 = await txn.rawUpdate(
+        '''
+          UPDATE ${MatchTableSchema.nameTable} SET ${MatchTableSchema.idSelection2Column} = ?
+          WHERE ${MatchTableSchema.idColumn} = ?
+        ''',
+        [selections.last.id, idMatch2],
+      );
+
+      if (count == 0 || count2 == 0) {
+        throw NoMatchsFound(Messages.noMatchsFound);
+      }
+    });
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:futebol/app/modules/simulator/src/presenter/screens/group_screen.dart';
+import 'package:futebol/app/modules/simulator/src/presenter/screens/round16_screen.dart';
 import 'src/data/usecases/Match/change_group_scoreboard_impl.dart';
 import 'src/data/usecases/Match/get_matchs_by_group_impl.dart';
 import 'src/data/usecases/Match/get_matchs_by_type_impl.dart';
+import 'src/data/usecases/Match/update_round16_matchs_impl.dart';
+import 'src/data/usecases/Selection/define_group_winners_impl.dart';
 import 'src/data/usecases/Selection/get_all_selections_impl.dart';
 import 'src/data/usecases/Selection/get_selections_by_group_impl.dart';
 import 'src/data/usecases/Selection/update_selection_statistics_impl.dart';
@@ -27,6 +30,8 @@ class SimulatorModule extends Module {
     Bind.lazySingleton((i) => GetAllSelectionsUC(i())),
     Bind.lazySingleton((i) => GetSelectionsByGroupUC(i())),
     Bind.lazySingleton((i) => ChangeScoreboardUC(repository: i())),
+    Bind.lazySingleton((i) => DefineGroupWinnersUC()),
+    Bind.lazySingleton((i) => UpdateRound16MatchsUC(i())),
     Bind.singleton(
       (i) => SelectionStore(
         getAll: i(),
@@ -39,6 +44,8 @@ class SimulatorModule extends Module {
         getByType: i(),
         getByGroup: i(),
         changeScoreboard: i(),
+        defineGroupWinners: i(),
+        updateRound16Matchs: i(),
       ),
     ),
   ];
@@ -50,5 +57,6 @@ class SimulatorModule extends Module {
       '/group',
       child: (context, args) => GroupScreen(group: args.data.toString()),
     ),
+    ChildRoute('/round16', child: (ctx, args) => const Round16Screen()),
   ];
 }

@@ -14,4 +14,9 @@ abstract class IDataSource {
     List<Selecao> selections,
     String group,
   );
+  Future<void> updateRound16Matchs({
+    required List<Selecao> selections,
+    required int idMatch1,
+    required int idMatch2,
+  });
 }

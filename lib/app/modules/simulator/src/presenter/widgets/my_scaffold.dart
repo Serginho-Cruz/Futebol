@@ -16,7 +16,7 @@ class _MyScaffoldState extends State<MyScaffold> {
     return Scaffold(
       endDrawer: Drawer(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        elevation: 30.0,
+        elevation: 10.0,
         width: MediaQuery.of(context).size.width * 0.4,
         child: Center(
           child: Column(
@@ -40,11 +40,38 @@ class _MyScaffoldState extends State<MyScaffold> {
                   ),
                 ),
               ),
+              ListTile(
+                hoverColor: Colors.white,
+                onTap: () {
+                  Navigator.popUntil(
+                      context, (route) => !Navigator.canPop(context));
+
+                  Modular.to.pushNamed('/round16');
+                },
+                title: const Text(
+                  "Oitavas",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
       appBar: AppBar(
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              onPressed: () => Scaffold.of(context).openEndDrawer(),
+              icon: const Icon(
+                Icons.menu_rounded,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
         title: const Text(
           'Simulador',
         ),

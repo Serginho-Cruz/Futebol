@@ -1,24 +1,34 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:futebol/app/modules/simulator/src/presenter/controllers/selection_store.dart';
 
 import '../../domain/entities/Match/match_entity.dart';
+import '../../domain/entities/Selection/selection_entity.dart';
 import '../../domain/usecases/Match/change_scoreboard_interface.dart';
 import '../../domain/usecases/Match/get_matchs_by_group.dart';
 import '../../domain/usecases/Match/get_matchs_by_type_interface.dart';
+import '../../domain/usecases/Match/update_round16_matchs_interface.dart';
+import '../../domain/usecases/Selection/define_group_winners_interface.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 
 class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
   late final IGetMatchsByType _getByType;
   late final IGetMatchsByGroup _getByGroup;
   late final IChangeScoreboard _changeScoreboard;
-
+  late final IDefineGroupWinners _defineGroupWinners;
+  late final IUpdateRound16Matchs _updateRound16Matchs;
   MatchStore({
     required IGetMatchsByType getByType,
     required IGetMatchsByGroup getByGroup,
     required IChangeScoreboard changeScoreboard,
+    required IDefineGroupWinners defineGroupWinners,
+    required IUpdateRound16Matchs updateRound16Matchs,
   }) : super([]) {
     _getByType = getByType;
     _getByGroup = getByGroup;
     _changeScoreboard = changeScoreboard;
+    _defineGroupWinners = defineGroupWinners;
+    _updateRound16Matchs = updateRound16Matchs;
   }
 
   Future<void> getMatchsByType(int type) async {
@@ -92,5 +102,19 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     }, (r) {});
 
     setLoading(false);
+  }
+
+  Future<void> updateRound16Matchs({
+    required List<Selecao> selections,
+    required String group,
+  }) async {
+    var result = await _updateRound16Matchs(
+      group: group,
+      winners: _defineGroupWinners(selections),
+    );
+
+    result.fold((l) {
+      setError(l);
+    }, (r) {});
   }
 }

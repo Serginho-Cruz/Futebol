@@ -5,7 +5,7 @@ import '../controllers/selection_store.dart';
 
 import '../../domain/entities/Selection/selection_entity.dart';
 import '../../errors/errors_classes/errors_classes.dart';
-import '../widgets/group_table.dart';
+import '../widgets/GroupTable/group_table.dart';
 import '../widgets/my_scaffold.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,11 +19,16 @@ class _HomeScreenState extends State<HomeScreen> {
   final SelectionStore store = Modular.get<SelectionStore>();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     Future.delayed(Duration.zero, () {
       store.getAllSelections();
     });
 
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MyScaffold(
       body: ScopedBuilder<SelectionStore, Failure, List<Selecao>>(
         store: store,

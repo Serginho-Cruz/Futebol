@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MatchPoint extends StatelessWidget {
-  MatchPoint({super.key, required this.onChanged, required this.point});
+  const MatchPoint({
+    super.key,
+    required this.onChanged,
+    required this.point,
+    required this.focus,
+    required this.onSubmit,
+  });
 
-  void Function(String) onChanged;
+  final void Function(String) onChanged;
   final String? point;
+  final FocusNode focus;
+  final void Function() onSubmit;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       initialValue: point,
+      focusNode: focus,
+      onEditingComplete: onSubmit,
       onChanged: onChanged,
       textAlign: TextAlign.center,
       style: const TextStyle(fontSize: 12.0, color: Colors.black),

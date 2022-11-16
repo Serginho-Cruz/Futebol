@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'selection_data.dart';
 import 'table_index.dart';
 
-import '../../domain/entities/Selection/selection_entity.dart';
+import '../../../domain/entities/Selection/selection_entity.dart';
 
 class GroupTable extends StatelessWidget {
   final List<Selecao> selections;
@@ -23,10 +23,10 @@ class GroupTable extends StatelessWidget {
 
     rows.add(_generateIndexRow(context));
 
-    for (var selection in selections) {
-      selection.id % 4 != 0
-          ? rows.add(_generateRow(selection, width))
-          : rows.add(_generateLastRow(selection));
+    for (int i = 1; i <= selections.length; i++) {
+      i % 4 != 0
+          ? rows.add(_generateRow(selections[i - 1], width))
+          : rows.add(_generateLastRow(selections[i - 1]));
     }
 
     return Padding(

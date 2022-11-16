@@ -28,8 +28,10 @@ void main() {
     });
     test("Returns the same selectionList that came from other usecase",
         () async {
+      const List<int> nums = [1, 1];
+
       when(() => repository.changeScoreboard(any()))
-          .thenAnswer((_) async => const Right([1, 1]));
+          .thenAnswer((_) async => const Right(nums));
 
       final result = await usecase(
         match: match,
