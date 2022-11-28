@@ -242,4 +242,26 @@ class SQLitedatasource implements IDataSource {
       }
     });
   }
+
+  @override
+  Future<void> updateQuarterMatchs({
+    required int idSelection,
+    required int idMatch,
+    required bool isId1,
+  }) async {
+    final db = await SQLite.instance.database;
+
+    await db.transaction((txn) async {
+      await txn.update(
+        MatchTableSchema.nameTable,
+        {
+          isId1
+              ? MatchTableSchema.idSelection1Column
+              : MatchTableSchema.idSelection2Column: idSelection,
+        },
+        where: '${MatchTableSchema.idColumn} = ?',
+        whereArgs: [idMatch],
+      );
+    });
+  }
 }

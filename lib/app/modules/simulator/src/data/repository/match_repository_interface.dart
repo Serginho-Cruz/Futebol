@@ -9,9 +9,14 @@ abstract class IMatchRepository {
   Future<Either<Failure, List<SoccerMatch>>> getMatchsByGroup(String group);
   Future<Either<Failure, SoccerMatch>> getMatchById(int id);
   Future<Either<Failure, List<int?>>> changeScoreboard(SoccerMatch newMatch);
-  Future<Either<Failure, void>> updateRound16Matchs(
-    int idMatch1,
-    int idMatch2,
-    List<Selecao> selections,
-  );
+  Future<Either<Failure, void>> updateRound16Matchs({
+    required int idMatch1,
+    required int idMatch2,
+    required List<Selecao> selections,
+  });
+  Future<Either<Failure, void>> updateQuarterMatchs({
+    required int idDestiny,
+    required int idSelection,
+    required bool isId1,
+  });
 }

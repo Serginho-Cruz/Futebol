@@ -19,4 +19,9 @@ abstract class IDataSource {
     required int idMatch1,
     required int idMatch2,
   });
+  Future<void> updateQuarterMatchs({
+    required int idSelection,
+    required int idMatch,
+    required bool isId1,
+  });
 }

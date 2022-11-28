@@ -1,6 +1,7 @@
+import 'package:sqflite/sqflite.dart';
+
 import 'SQLite/Matchs/elimination_matchs.dart';
 import 'SQLite/Matchs/group_matchs.dart';
-import 'package:sqflite/sqflite.dart';
 import 'SQLite/selections.dart';
 import 'SQLite/tables_schema.dart';
 

@@ -1,22 +1,21 @@
 import '../entities/Match/match_entity.dart';
-
 import '../entities/Selection/selection_entity.dart';
 
 class SoccerMatchModel extends SoccerMatch {
-  late final int id;
-  final Selecao selection1;
-  final Selecao selection2;
-  late final String local;
-  late final String date;
-  late final String hour;
-  late final String? group;
-  late final int type;
-  late final int? score1;
-  late final int? score2;
-  late final int? extratimeScore1;
-  late final int? extratimeScore2;
-  late final int? penaltyScore1;
-  late final int? penaltyScore2;
+  late int id;
+  Selecao selection1;
+  Selecao selection2;
+  late String local;
+  late String date;
+  late String hour;
+  late String? group;
+  late int type;
+  late int? score1;
+  late int? score2;
+  late int? extratimeScore1;
+  late int? extratimeScore2;
+  late int? penaltyScore1;
+  late int? penaltyScore2;
 
   SoccerMatchModel({
     required SoccerMatch match,

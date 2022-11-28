@@ -1,4 +1,4 @@
-import 'package:futebol/app/modules/simulator/src/domain/entities/Selection/selection_entity.dart';
+import '../../../domain/entities/Selection/selection_entity.dart';
 
 import '../../../domain/usecases/Selection/define_group_winners_interface.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:futebol/app/modules/simulator/src/domain/entities/Match/match_entity.dart';
-import 'package:futebol/app/modules/simulator/src/domain/models/match_model.dart';
-import 'package:futebol/app/modules/simulator/src/presenter/widgets/Cards/group_match_card.dart';
+import '../../domain/entities/Match/match_entity.dart';
+import '../../domain/models/match_model.dart';
+import '../widgets/GroupScreen/group_match_card.dart';
 import '../controllers/match_store.dart';
 import '../widgets/GroupTable/group_table.dart';
 import '../../domain/entities/Selection/selection_entity.dart';
@@ -110,7 +110,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 return GridView.count(
                   shrinkWrap: true,
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  crossAxisSpacing: 15.0,
+                  crossAxisSpacing: 10.0,
                   mainAxisSpacing: 15.0,
                   crossAxisCount: 2,
                   physics: const BouncingScrollPhysics(),

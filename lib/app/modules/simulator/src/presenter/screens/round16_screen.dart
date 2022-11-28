@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import 'package:futebol/app/modules/simulator/src/presenter/controllers/selection_store.dart';
+import '../controllers/selection_store.dart';
 
 import '../../domain/entities/Match/match_entity.dart';
 import '../../domain/models/match_model.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 import '../controllers/match_store.dart';
-import '../widgets/Cards/group_match_card.dart';
+import '../widgets/GroupScreen/group_match_card.dart';
+import '../widgets/elimination_match_card.dart';
 import '../widgets/my_scaffold.dart';
 
 class Round16Screen extends StatefulWidget {
@@ -20,7 +21,6 @@ class Round16Screen extends StatefulWidget {
 class _Round16ScreenState extends State<Round16Screen> {
   final MatchStore store = Modular.get<MatchStore>();
   final SelectionStore selectionStore = Modular.get<SelectionStore>();
-  List<FocusNode> focusNodes = [];
 
   @override
   void initState() {
@@ -36,39 +36,15 @@ class _Round16ScreenState extends State<Round16Screen> {
   Widget build(BuildContext context) {
     return ScopedBuilder<MatchStore, Failure, List<SoccerMatch>>(
       store: store,
-      onLoading: (ctx) => const CircularProgressIndicator(),
+      onLoading: (ctx) => MyScaffold(
+        body: const SizedBox(
+          width: 500,
+          height: 600,
+          child: CircularProgressIndicator(),
+        ),
+      ),
       onError: (ctx, error) => Text(error.toString()),
       onState: (ctx, matchs) {
-        List<GroupMatchCard> cards = [];
-        for (var match in matchs) {
-          FocusNode _focus1 = FocusNode();
-          FocusNode _focus2 = FocusNode();
-
-          focusNodes.addAll([_focus1, _focus2]);
-
-          cards.add(
-            GroupMatchCard(
-              focus1: _focus1,
-              focus2: _focus2,
-              matchStore: store,
-              hasMatchsFinished: () {
-                for (var card in cards) {
-                  if (card.point1 == null || card.point2 == null) {
-                    return false;
-                  }
-                }
-                return true;
-              },
-              match: SoccerMatchModel(
-                match: match,
-                selection1: selectionStore.state
-                    .firstWhere((element) => element.id == match.idSelection1),
-                selection2: selectionStore.state
-                    .firstWhere((element) => element.id == match.idSelection2),
-              ),
-            ),
-          );
-        }
         return MyScaffold(
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -87,14 +63,22 @@ class _Round16ScreenState extends State<Round16Screen> {
                     ),
                   ),
                 ),
-                GridView.count(
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  crossAxisSpacing: 18.0,
-                  mainAxisSpacing: 18.0,
-                  crossAxisCount: 2,
-                  children: cards,
-                ),
+                store.state.isEmpty
+                    ? Container()
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 4,
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        itemBuilder: (ctx, index) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            _buildCard(index * 2, matchs),
+                            _buildCard(index * 2 + 1, matchs),
+                          ],
+                        ),
+                      ),
               ],
             ),
           ),
@@ -103,11 +87,16 @@ class _Round16ScreenState extends State<Round16Screen> {
     );
   }
 
-  @override
-  void dispose() {
-    for (var focus in focusNodes) {
-      focus.dispose();
-    }
-    super.dispose();
+  Widget _buildCard(int i, List<SoccerMatch> matchs) {
+    return EliminationMatchCard(
+      store: store,
+      match: SoccerMatchModel(
+        match: matchs[i],
+        selection1: selectionStore.state
+            .firstWhere((e) => e.id == matchs[i].idSelection1),
+        selection2: selectionStore.state
+            .firstWhere((e) => e.id == matchs[i].idSelection2),
+      ),
+    );
   }
 }

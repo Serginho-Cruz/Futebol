@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import '../controllers/selection_store.dart';
 
 import '../../domain/entities/Selection/selection_entity.dart';
 import '../../errors/errors_classes/errors_classes.dart';
+import '../controllers/selection_store.dart';
 import '../widgets/GroupTable/group_table.dart';
 import '../widgets/my_scaffold.dart';
 

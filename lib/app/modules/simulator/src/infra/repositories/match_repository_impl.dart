@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:futebol/app/modules/simulator/src/domain/entities/Selection/selection_entity.dart';
+import '../../domain/entities/Selection/selection_entity.dart';
 import '../../data/repository/match_repository_interface.dart';
 import '../datasource/datasource_interface.dart';
 
@@ -70,11 +70,11 @@ class MatchRepository implements IMatchRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateRound16Matchs(
-    int idMatch1,
-    int idMatch2,
-    List<Selecao> selections,
-  ) async {
+  Future<Either<Failure, void>> updateRound16Matchs({
+    required int idMatch1,
+    required int idMatch2,
+    required List<Selecao> selections,
+  }) async {
     try {
       var result = await datasource.updateRound16Matchs(
         idMatch1: idMatch1,
@@ -84,6 +84,29 @@ class MatchRepository implements IMatchRepository {
 
       return Right(result);
     } on NoMatchsFound catch (e) {
+      return Left(e);
+    } on DataSourceError catch (e) {
+      return Left(e);
+    } catch (e) {
+      return Left(DataSourceError(Messages.genericError));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateQuarterMatchs({
+    required int idDestiny,
+    required int idSelection,
+    required bool isId1,
+  }) async {
+    try {
+      var result = await datasource.updateQuarterMatchs(
+        idSelection: idSelection,
+        idMatch: idDestiny,
+        isId1: isId1,
+      );
+
+      return Right(result);
+    } on NoMatchFound catch (e) {
       return Left(e);
     } on DataSourceError catch (e) {
       return Left(e);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:futebol/app/modules/simulator/src/domain/entities/Selection/selection_entity.dart';
+import '../../../domain/entities/Selection/selection_entity.dart';
 
 class MatchCardImage extends StatelessWidget {
   MatchCardImage({super.key, required Selecao selection}) {

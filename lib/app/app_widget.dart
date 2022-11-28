@@ -25,7 +25,7 @@ class AppWidget extends StatelessWidget {
             onError: Colors.white,
             background: Color.fromARGB(135, 89, 21, 55),
             onBackground: Colors.white,
-            surface: Color.fromRGBO(80, 24, 55, 1),
+            surface: Color.fromARGB(255, 82, 15, 52),
             onSurface: Colors.white),
         scaffoldBackgroundColor: const Color.fromARGB(135, 89, 24, 55),
         appBarTheme: const AppBarTheme(
@@ -41,7 +41,7 @@ class AppWidget extends StatelessWidget {
             fontSize: 26.0,
           ),
           iconTheme: IconThemeData(size: 45.0),
-          backgroundColor: Color.fromARGB(155, 115, 18, 63),
+          backgroundColor: Color.fromARGB(92, 115, 18, 63),
         ),
       ),
       routeInformationParser: Modular.routeInformationParser,

@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:futebol/app/modules/simulator/src/data/usecases/Match/change_group_scoreboard_impl.dart';
+import 'package:futebol/app/modules/simulator/src/data/usecases/Match/change_scoreboard_impl.dart';
 import 'package:futebol/app/modules/simulator/src/domain/entities/Match/match_entity.dart';
 import 'package:mocktail/mocktail.dart';
 import '../classes_mocks.dart';

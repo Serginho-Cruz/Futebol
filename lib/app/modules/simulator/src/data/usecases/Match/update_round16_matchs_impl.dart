@@ -1,6 +1,6 @@
-import 'package:futebol/app/modules/simulator/src/errors/errors_classes/errors_classes.dart';
+import '../../../errors/errors_classes/errors_classes.dart';
 
-import 'package:futebol/app/modules/simulator/src/domain/entities/Selection/selection_entity.dart';
+import '../../../domain/entities/Selection/selection_entity.dart';
 
 import 'package:dartz/dartz.dart';
 
@@ -43,7 +43,11 @@ class UpdateRound16MatchsUC implements IUpdateRound16Matchs {
       }
     }
 
-    return await repository.updateRound16Matchs(idMatch1, idMatch2, winners);
+    return await repository.updateRound16Matchs(
+      idMatch1: idMatch1,
+      idMatch2: idMatch2,
+      selections: winners,
+    );
   }
 
   int? _groupToInt(String group) {
