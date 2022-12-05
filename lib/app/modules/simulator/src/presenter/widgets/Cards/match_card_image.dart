@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../domain/entities/Selection/selection_entity.dart';
 
 class MatchCardImage extends StatelessWidget {

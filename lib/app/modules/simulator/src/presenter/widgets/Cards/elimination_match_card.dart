@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../domain/models/match_model.dart';
-import '../controllers/match_store.dart';
+import '../../../domain/models/match_model.dart';
+import '../../controllers/match_store.dart';
 
-import 'Cards/match_card_image.dart';
-import 'Cards/match_point.dart';
+import 'match_card_image.dart';
+import 'match_point.dart';
 
 enum FieldType {
   extraTime,
@@ -15,10 +15,14 @@ class EliminationMatchCard extends StatefulWidget {
     super.key,
     required this.match,
     required this.store,
+    required this.width,
+    required this.updateNextFaseMatchs,
   });
 
   final SoccerMatchModel match;
   final MatchStore store;
+  final double width;
+  final Future<void> Function(SoccerMatchModel match) updateNextFaseMatchs;
 
   @override
   State<EliminationMatchCard> createState() => _EliminationMatchCardState();
@@ -76,7 +80,7 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
     });
   }
 
-  void _showFields(FieldType field) {
+  void _showField(FieldType field) {
     if (!mounted) {
       return;
     }
@@ -91,12 +95,12 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
 
   @override
   Widget build(BuildContext context) {
-    SoccerMatchModel match = widget.match;
-    bool enabled = match.idSelection1 != 33 && match.idSelection2 != 33;
+    bool enabled =
+        widget.match.idSelection1 != 33 && widget.match.idSelection2 != 33;
 
     return Container(
       alignment: Alignment.center,
-      width: MediaQuery.of(context).size.width * 0.45,
+      width: widget.width,
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
@@ -110,54 +114,53 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: () => _showFields(FieldType.penalty),
-            child: Container(
-              height: 35,
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xFF730217),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  bottomRight: Radius.circular(30.0),
-                ),
+          Container(
+            height: 35,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              color: Color(0xFF730217),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                bottomRight: Radius.circular(30.0),
               ),
-              child: Text(
-                '${match.date}/2022',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                ),
+            ),
+            child: Text(
+              '${widget.match.date}/2022',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20.0,
               ),
             ),
           ),
-          Text(match.hour),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Text(widget.match.hour),
+          ),
           Flexible(
             fit: FlexFit.loose,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                MatchCardImage(selection: match.selection1),
+                MatchCardImage(selection: widget.match.selection1),
                 MatchPoint(
                   enabled: enabled,
                   point: widget.match.score1?.toString(),
-                  onChanged: (str) async {
+                  onChanged: (str) {
                     if (str.isNotEmpty) {
                       widget.match.score1 = int.tryParse(str);
 
                       if (widget.match.score2 != null) {
-                        await widget.store.changeKnockoutScoreboard(
-                          match: match,
+                        widget.store.changeKnockoutScoreboard(
+                          match: widget.match,
                           score1: widget.match.score1!,
                           score2: widget.match.score2!,
                         );
 
                         if (widget.match.score1 == widget.match.score2) {
-                          _showFields(FieldType.extraTime);
+                          _showField(FieldType.extraTime);
                         } else {
-                          await widget.store
-                              .updateQuarterMatchs(match: widget.match);
+                          widget.updateNextFaseMatchs(widget.match);
                           _hideField(FieldType.extraTime);
                           _hideField(FieldType.penalty);
                         }
@@ -174,21 +177,20 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                 MatchPoint(
                   enabled: enabled,
                   focus: focusNodes[1],
-                  onChanged: (str) async {
+                  onChanged: (str) {
                     if (str.isNotEmpty) {
                       widget.match.score2 = int.tryParse(str);
                       if (widget.match.score1 != null) {
-                        await widget.store.changeKnockoutScoreboard(
-                          match: match,
+                        widget.store.changeKnockoutScoreboard(
+                          match: widget.match,
                           score1: widget.match.score1!,
                           score2: widget.match.score2!,
                         );
 
                         if (widget.match.score1 == widget.match.score2) {
-                          _showFields(FieldType.extraTime);
+                          _showField(FieldType.extraTime);
                         } else {
-                          await widget.store
-                              .updateQuarterMatchs(match: widget.match);
+                          widget.updateNextFaseMatchs(widget.match);
                           _hideField(FieldType.extraTime);
                           _hideField(FieldType.penalty);
                         }
@@ -206,7 +208,7 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                   },
                   point: widget.match.score2?.toString(),
                 ),
-                MatchCardImage(selection: match.selection2),
+                MatchCardImage(selection: widget.match.selection2),
               ],
             ),
           ),
@@ -275,12 +277,12 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                 Padding(
                   padding: const EdgeInsets.only(right: 5.0),
                   child: MatchPoint(
-                    onChanged: (str) async {
+                    onChanged: (str) {
                       if (str.isNotEmpty) {
                         widget.match.extratimeScore1 = int.tryParse(str);
 
                         if (widget.match.extratimeScore2 != null) {
-                          await widget.store.changeKnockoutScoreboard(
+                          widget.store.changeKnockoutScoreboard(
                             match: widget.match,
                             score1: widget.match.score1!,
                             score2: widget.match.score2!,
@@ -292,11 +294,10 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
 
                           if (widget.match.extratimeScore1 ==
                               widget.match.extratimeScore2) {
-                            _showFields(FieldType.penalty);
+                            _showField(FieldType.penalty);
                           } else {
                             _hideField(FieldType.penalty);
-                            await widget.store
-                                .updateQuarterMatchs(match: widget.match);
+                            widget.updateNextFaseMatchs(widget.match);
                           }
                         }
                       } else {
@@ -313,12 +314,12 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
                   child: MatchPoint(
-                    onChanged: (str) async {
+                    onChanged: (str) {
                       if (str.isNotEmpty) {
                         widget.match.extratimeScore2 = int.tryParse(str);
 
                         if (widget.match.extratimeScore1 != null) {
-                          await widget.store.changeKnockoutScoreboard(
+                          widget.store.changeKnockoutScoreboard(
                             match: widget.match,
                             score1: widget.match.score1!,
                             score2: widget.match.score2!,
@@ -330,11 +331,10 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
 
                           if (widget.match.extratimeScore1 ==
                               widget.match.extratimeScore2) {
-                            _showFields(FieldType.penalty);
+                            _showField(FieldType.penalty);
                           } else {
                             _hideField(FieldType.penalty);
-                            await widget.store
-                                .updateQuarterMatchs(match: widget.match);
+                            widget.updateNextFaseMatchs(widget.match);
                           }
                         }
                       } else {
@@ -388,12 +388,12 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                 Padding(
                   padding: const EdgeInsets.only(right: 5.0),
                   child: MatchPoint(
-                    onChanged: (str) async {
+                    onChanged: (str) {
                       if (str.isNotEmpty) {
                         widget.match.penaltyScore1 = int.tryParse(str);
 
                         if (widget.match.penaltyScore2 != null) {
-                          await widget.store.changeKnockoutScoreboard(
+                          widget.store.changeKnockoutScoreboard(
                               match: widget.match,
                               score1: widget.match.score1!,
                               score2: widget.match.score2!,
@@ -410,8 +410,7 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                               widget.match.penaltyScore2) {
                             setState(() => _error = true);
                           } else {
-                            widget.store
-                                .updateQuarterMatchs(match: widget.match);
+                            widget.updateNextFaseMatchs(widget.match);
                           }
                         }
                       } else {
@@ -451,8 +450,7 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                             setState(() => _error = true);
                           } else {
                             setState(() => _error = false);
-                            widget.store
-                                .updateQuarterMatchs(match: widget.match);
+                            widget.updateNextFaseMatchs(widget.match);
                           }
                         }
                       } else {

@@ -14,14 +14,16 @@ abstract class IDataSource {
     List<Selecao> selections,
     String group,
   );
-  Future<void> updateRound16Matchs({
+  Future<void> updateRound16({
     required List<Selecao> selections,
     required int idMatch1,
     required int idMatch2,
   });
-  Future<void> updateQuarterMatchs({
-    required int idSelection,
+
+  Future<void> updateNextPhase({
     required int idMatch,
+    required int idSelection,
     required bool isId1,
   });
+  Future<List<SoccerMatch>> getFinalMatchs();
 }

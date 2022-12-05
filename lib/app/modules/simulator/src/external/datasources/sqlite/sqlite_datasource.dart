@@ -4,9 +4,9 @@ import '../../../domain/entities/Selection/selection_entity.dart';
 import '../../../domain/entities/Selection/selection_mapper.dart';
 import '../../../errors/errors_classes/errors_classes.dart';
 import '../../../errors/errors_messages_classes/errors_messages.dart';
+import '../../../infra/datasource/datasource_interface.dart';
 import '../../databases/SQLite/sqlite.dart';
 import '../../databases/SQLite/tables_schema.dart';
-import '../../../infra/datasource/datasource_interface.dart';
 
 class SQLitedatasource implements IDataSource {
   @override
@@ -213,7 +213,7 @@ class SQLitedatasource implements IDataSource {
   }
 
   @override
-  Future<void> updateRound16Matchs({
+  Future<void> updateRound16({
     required List<Selecao> selections,
     required int idMatch1,
     required int idMatch2,
@@ -244,7 +244,7 @@ class SQLitedatasource implements IDataSource {
   }
 
   @override
-  Future<void> updateQuarterMatchs({
+  Future<void> updateNextPhase({
     required int idSelection,
     required int idMatch,
     required bool isId1,
@@ -263,5 +263,29 @@ class SQLitedatasource implements IDataSource {
         whereArgs: [idMatch],
       );
     });
+  }
+
+  @override
+  Future<List<SoccerMatch>> getFinalMatchs() async {
+    var db = await SQLite.instance.database;
+
+    List<SoccerMatch> matchs = [];
+    var map = await db.query(
+      MatchTableSchema.nameTable,
+      orderBy: MatchTableSchema.typeColumn,
+      where:
+          '${MatchTableSchema.typeColumn} = ? or ${MatchTableSchema.typeColumn} = ? or  ${MatchTableSchema.typeColumn} = ? ',
+      whereArgs: [
+        SoccerMatchType.semifinals,
+        SoccerMatchType.thirdPlace,
+        SoccerMatchType.finalMatch
+      ],
+    );
+
+    if (map.isEmpty) {
+      throw NoMatchsFound(Messages.noMatchsFound);
+    }
+    matchs.addAll(map.map((e) => MatchMapper.fromMap(e)).toList());
+    return matchs;
   }
 }

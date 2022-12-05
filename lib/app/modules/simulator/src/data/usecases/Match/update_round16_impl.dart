@@ -1,17 +1,15 @@
-import '../../../errors/errors_classes/errors_classes.dart';
-
-import '../../../domain/entities/Selection/selection_entity.dart';
-
 import 'package:dartz/dartz.dart';
 
-import '../../../domain/usecases/Match/update_round16_matchs_interface.dart';
+import '../../../domain/entities/Selection/selection_entity.dart';
+import '../../../domain/usecases/Match/update_round16_interface.dart';
+import '../../../errors/errors_classes/errors_classes.dart';
 import '../../../errors/errors_messages_classes/errors_messages.dart';
 import '../../repository/match_repository_interface.dart';
 
-class UpdateRound16MatchsUC implements IUpdateRound16Matchs {
+class UpdateRound16UC implements IUpdateRound16 {
   final IMatchRepository repository;
 
-  UpdateRound16MatchsUC(this.repository);
+  UpdateRound16UC(this.repository);
 
   @override
   Future<Either<Failure, void>> call({
@@ -43,7 +41,7 @@ class UpdateRound16MatchsUC implements IUpdateRound16Matchs {
       }
     }
 
-    return await repository.updateRound16Matchs(
+    return await repository.updateRound16(
       idMatch1: idMatch1,
       idMatch2: idMatch2,
       selections: winners,

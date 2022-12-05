@@ -21,32 +21,25 @@ class _MyScaffoldState extends State<MyScaffold> {
         child: Center(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 12.0),
-                child: ListTile(
-                  hoverColor: Colors.white,
-                  onTap: () {
-                    Navigator.popUntil(
-                        context, (route) => !Navigator.canPop(context));
-
-                    Modular.to.pushNamed('/');
-                  },
-                  title: const Text(
-                    "Home",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20.0,
-                    ),
+              ListTile(
+                hoverColor: Colors.white,
+                onTap: () {
+                  _navigateTo('/');
+                },
+                horizontalTitleGap: 0.0,
+                contentPadding: const EdgeInsets.only(top: 12.0),
+                title: const Text(
+                  "Home",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
                   ),
                 ),
               ),
               ListTile(
                 hoverColor: Colors.white,
                 onTap: () {
-                  Navigator.popUntil(
-                      context, (route) => !Navigator.canPop(context));
-
-                  Modular.to.pushNamed('/round16');
+                  _navigateTo('/round16');
                 },
                 title: const Text(
                   "Oitavas",
@@ -56,6 +49,32 @@ class _MyScaffoldState extends State<MyScaffold> {
                   ),
                 ),
               ),
+              ListTile(
+                hoverColor: Colors.white,
+                onTap: () {
+                  _navigateTo('/quarters');
+                },
+                title: const Text(
+                  "Quartas",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+              ListTile(
+                hoverColor: Colors.white,
+                onTap: () {
+                  _navigateTo('/finals');
+                },
+                title: const Text(
+                  "Finais",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -78,5 +97,10 @@ class _MyScaffoldState extends State<MyScaffold> {
       ),
       body: widget.body,
     );
+  }
+
+  void _navigateTo(String route) {
+    Navigator.popUntil(context, (route) => !Navigator.canPop(context));
+    Modular.to.pushReplacementNamed(route);
   }
 }

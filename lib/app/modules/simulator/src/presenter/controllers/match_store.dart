@@ -1,6 +1,9 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
-import '../../domain/usecases/Match/update_quarter_matchs_interface.dart';
+import '../../domain/usecases/Match/update_finals_interface.dart';
+import '../../domain/usecases/Match/update_semifinals_interface.dart';
+import '../../domain/usecases/Match/get_final_matchs_interface.dart';
+import '../../domain/usecases/Match/update_quarters_interface.dart';
 import 'selection_store.dart';
 
 import '../../domain/entities/Match/match_entity.dart';
@@ -8,7 +11,7 @@ import '../../domain/entities/Selection/selection_entity.dart';
 import '../../domain/usecases/Match/change_scoreboard_interface.dart';
 import '../../domain/usecases/Match/get_matchs_by_group.dart';
 import '../../domain/usecases/Match/get_matchs_by_type_interface.dart';
-import '../../domain/usecases/Match/update_round16_matchs_interface.dart';
+import '../../domain/usecases/Match/update_round16_interface.dart';
 import '../../domain/usecases/Selection/define_group_winners_interface.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 
@@ -17,15 +20,21 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
   late final IGetMatchsByGroup _getByGroup;
   late final IChangeScoreboard _changeScoreboard;
   late final IDefineGroupWinners _defineGroupWinners;
-  late final IUpdateRound16Matchs _updateRound16Matchs;
-  late final IUpdateQuarterMatchs _updateQuarterMatchs;
+  late final IUpdateRound16 _updateRound16Matchs;
+  late final IUpdateQuarters _updateQuarterMatchs;
+  late final IUpdateSemifinals _updateSemifinals;
+  late final IUpdateFinals _updateFinals;
+  late final IGetFinalMatchs _getFinalMatchs;
   MatchStore({
     required IGetMatchsByType getByType,
     required IGetMatchsByGroup getByGroup,
     required IChangeScoreboard changeScoreboard,
     required IDefineGroupWinners defineGroupWinners,
-    required IUpdateRound16Matchs updateRound16Matchs,
-    required IUpdateQuarterMatchs updateQuarterMatchs,
+    required IUpdateRound16 updateRound16Matchs,
+    required IUpdateQuarters updateQuarterMatchs,
+    required IUpdateSemifinals updateSemifinals,
+    required IUpdateFinals updateFinals,
+    required IGetFinalMatchs getFinalMatchs,
   }) : super([]) {
     _getByType = getByType;
     _getByGroup = getByGroup;
@@ -33,6 +42,9 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     _defineGroupWinners = defineGroupWinners;
     _updateRound16Matchs = updateRound16Matchs;
     _updateQuarterMatchs = updateQuarterMatchs;
+    _updateSemifinals = updateSemifinals;
+    _updateFinals = updateFinals;
+    _getFinalMatchs = getFinalMatchs;
   }
 
   Future<void> getMatchsByType(int type) async {
@@ -104,7 +116,7 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     }, (r) {});
   }
 
-  Future<void> updateRound16Matchs({
+  Future<void> updateRound16({
     required List<Selecao> selections,
     required String group,
   }) async {
@@ -118,10 +130,10 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     }, (r) {});
   }
 
-  Future<void> updateQuarterMatchs({
+  Future<void> updateQuarters({
     required SoccerMatch match,
   }) async {
-    int winnerId = _defineKnockoutWinner(match);
+    int winnerId = defineKnockoutWinner(match);
 
     var result = await _updateQuarterMatchs(
       matchId: match.id,
@@ -133,7 +145,47 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     }, (r) {});
   }
 
-  int _defineKnockoutWinner(SoccerMatch match) {
+  Future<void> updateSemifinals({required SoccerMatch match}) async {
+    int winnerId = defineKnockoutWinner(match);
+
+    var result = await _updateSemifinals(matchId: match.id, winnerId: winnerId);
+
+    result.fold((l) {
+      setError(l);
+    }, (r) {});
+  }
+
+  Future<void> updateFinals({required SoccerMatch match}) async {
+    int winnerId = defineKnockoutWinner(match);
+    int loserId = winnerId == match.idSelection1
+        ? match.idSelection2
+        : match.idSelection1;
+
+    var result = await _updateFinals(
+      idMatch: match.id,
+      loserId: loserId,
+      winnerId: winnerId,
+    );
+
+    result.fold((l) {
+      setError(l);
+    }, (r) {});
+  }
+
+  Future<void> getFinalMatchs() async {
+    setLoading(true);
+    var result = await _getFinalMatchs();
+
+    result.fold((l) {
+      setError(l);
+    }, (r) {
+      update(r);
+    });
+
+    setLoading(false);
+  }
+
+  int defineKnockoutWinner(SoccerMatch match) {
     int result = match.score1!.compareTo(match.score2!);
     if (result > 0) {
       return match.idSelection1;

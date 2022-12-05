@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
-import '../../../domain/usecases/Match/update_quarter_matchs_interface.dart';
+import '../../../domain/usecases/Match/update_quarters_interface.dart';
 import '../../../errors/errors_classes/errors_classes.dart';
 
 import '../../repository/match_repository_interface.dart';
 
-class UpdateQuarterMatchsUC implements IUpdateQuarterMatchs {
+class UpdateQuartersUC implements IUpdateQuarters {
   final IMatchRepository repository;
 
-  UpdateQuarterMatchsUC(this.repository);
+  UpdateQuartersUC(this.repository);
 
   @override
   Future<Either<Failure, void>> call({
@@ -25,7 +25,7 @@ class UpdateQuarterMatchsUC implements IUpdateQuarterMatchs {
       isId1 = false;
     }
 
-    return await repository.updateQuarterMatchs(
+    return await repository.updateNextPhase(
       idDestiny: idDestiny,
       idSelection: winnerId,
       isId1: isId1,

@@ -7,8 +7,7 @@ import '../../domain/entities/Match/match_entity.dart';
 import '../../domain/models/match_model.dart';
 import '../../errors/errors_classes/errors_classes.dart';
 import '../controllers/match_store.dart';
-import '../widgets/GroupScreen/group_match_card.dart';
-import '../widgets/elimination_match_card.dart';
+import '../widgets/Cards/elimination_match_card.dart';
 import '../widgets/my_scaffold.dart';
 
 class Round16Screen extends StatefulWidget {
@@ -34,19 +33,21 @@ class _Round16ScreenState extends State<Round16Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedBuilder<MatchStore, Failure, List<SoccerMatch>>(
-      store: store,
-      onLoading: (ctx) => MyScaffold(
-        body: const SizedBox(
-          width: 500,
-          height: 600,
-          child: CircularProgressIndicator(),
+    return MyScaffold(
+      body: ScopedBuilder<MatchStore, Failure, List<SoccerMatch>>(
+        store: store,
+        onLoading: (ctx) => const Center(
+          child: SizedBox(
+            width: 200,
+            height: 300,
+            child: CircularProgressIndicator(
+              color: Colors.lightBlue,
+            ),
+          ),
         ),
-      ),
-      onError: (ctx, error) => Text(error.toString()),
-      onState: (ctx, matchs) {
-        return MyScaffold(
-          body: SingleChildScrollView(
+        onError: (ctx, error) => Text(error.toString()),
+        onState: (ctx, matchs) {
+          return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
@@ -63,33 +64,33 @@ class _Round16ScreenState extends State<Round16Screen> {
                     ),
                   ),
                 ),
-                store.state.isEmpty
-                    ? Container()
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 4,
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        itemBuilder: (ctx, index) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            _buildCard(index * 2, matchs),
-                            _buildCard(index * 2 + 1, matchs),
-                          ],
-                        ),
-                      ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: store.state.length ~/ 2,
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  itemBuilder: (ctx, index) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      _buildCard(index * 2, matchs),
+                      _buildCard(index * 2 + 1, matchs),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
   Widget _buildCard(int i, List<SoccerMatch> matchs) {
     return EliminationMatchCard(
       store: store,
+      updateNextFaseMatchs: (match) => store.updateQuarters(match: match),
+      width: MediaQuery.of(context).size.width * 0.45,
       match: SoccerMatchModel(
         match: matchs[i],
         selection1: selectionStore.state

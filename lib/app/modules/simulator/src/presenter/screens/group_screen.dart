@@ -3,7 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import '../../domain/entities/Match/match_entity.dart';
 import '../../domain/models/match_model.dart';
-import '../widgets/GroupScreen/group_match_card.dart';
+import '../widgets/Cards/group_match_card.dart';
 import '../controllers/match_store.dart';
 import '../widgets/GroupTable/group_table.dart';
 import '../../domain/entities/Selection/selection_entity.dart';
@@ -90,7 +90,8 @@ class _GroupScreenState extends State<GroupScreen> {
                       focus2: focus2,
                       hasMatchsFinished: () {
                         for (var card in cards) {
-                          if (card.point1 == null || card.point2 == null) {
+                          if (card.match.score1 == null ||
+                              card.match.score2 == null) {
                             return false;
                           }
                         }

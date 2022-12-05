@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+
 import '../../../domain/models/match_model.dart';
 import '../../controllers/match_store.dart';
-
 import '../../controllers/selection_store.dart';
-import '../Cards/match_card_image.dart';
-import '../Cards/match_point.dart';
+import 'match_card_image.dart';
+import 'match_point.dart';
 
 class GroupMatchCard extends StatelessWidget {
   GroupMatchCard({
@@ -16,15 +16,11 @@ class GroupMatchCard extends StatelessWidget {
     required FocusNode focus1,
     required FocusNode focus2,
   }) {
-    point1 = match.score1;
-    point2 = match.score2;
     _focus1 = focus1;
     _focus2 = focus2;
   }
 
   SoccerMatchModel match;
-  int? point1;
-  int? point2;
   final MatchStore matchStore;
   final bool Function() hasMatchsFinished;
   late final FocusNode _focus1;
@@ -75,7 +71,7 @@ class GroupMatchCard extends StatelessWidget {
                   focus: _focus1,
                   point: match.score1?.toString(),
                   onSubmit: () {
-                    if (point2 == null) {
+                    if (match.score2 == null) {
                       _focus2.requestFocus();
                     } else {
                       _focus1.unfocus();
@@ -112,14 +108,14 @@ class GroupMatchCard extends StatelessWidget {
   void _onChanged(String str, bool isFirstSelection) async {
     if (str.trim().isNotEmpty) {
       isFirstSelection
-          ? point1 = int.tryParse(str)
-          : point2 = int.tryParse(str);
+          ? match.score1 = int.tryParse(str)
+          : match.score2 = int.tryParse(str);
 
-      if ((isFirstSelection ? point2 : point1) != null) {
+      if ((isFirstSelection ? match.score2 : match.score1) != null) {
         List<int?>? oldScores = await matchStore.changeGroupScoreboard(
           match: match,
-          score1: point1!,
-          score2: point2!,
+          score1: match.score1!,
+          score2: match.score2!,
         );
 
         if (oldScores != null) {
@@ -127,17 +123,17 @@ class GroupMatchCard extends StatelessWidget {
             selectionId1: match.idSelection1,
             selectionId2: match.idSelection2,
             group: match.group!,
-            newScores: [point1!, point2!],
+            newScores: [match.score1!, match.score2!],
             oldScores: oldScores,
           );
         }
       }
     } else {
-      isFirstSelection ? point1 = null : point2 = null;
+      isFirstSelection ? match.score1 = null : match.score2 = null;
     }
 
     if (hasMatchsFinished()) {
-      matchStore.updateRound16Matchs(
+      matchStore.updateRound16(
         selections: Modular.get<SelectionStore>().state,
         group: match.group!,
       );

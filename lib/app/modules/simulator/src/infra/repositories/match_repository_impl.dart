@@ -70,13 +70,13 @@ class MatchRepository implements IMatchRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateRound16Matchs({
+  Future<Either<Failure, void>> updateRound16({
     required int idMatch1,
     required int idMatch2,
     required List<Selecao> selections,
   }) async {
     try {
-      var result = await datasource.updateRound16Matchs(
+      var result = await datasource.updateRound16(
         idMatch1: idMatch1,
         idMatch2: idMatch2,
         selections: selections,
@@ -93,20 +93,30 @@ class MatchRepository implements IMatchRepository {
   }
 
   @override
-  Future<Either<Failure, void>> updateQuarterMatchs({
+  Future<Either<Failure, void>> updateNextPhase({
     required int idDestiny,
     required int idSelection,
     required bool isId1,
   }) async {
     try {
-      var result = await datasource.updateQuarterMatchs(
-        idSelection: idSelection,
+      var result = await datasource.updateNextPhase(
         idMatch: idDestiny,
+        idSelection: idSelection,
         isId1: isId1,
       );
 
       return Right(result);
-    } on NoMatchFound catch (e) {
+    } catch (e) {
+      return Left(DataSourceError(Messages.genericError));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<SoccerMatch>>> getFinalMatchs() async {
+    try {
+      var result = await datasource.getFinalMatchs();
+      return Right(result);
+    } on NoMatchsFound catch (e) {
       return Left(e);
     } on DataSourceError catch (e) {
       return Left(e);
