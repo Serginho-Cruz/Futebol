@@ -173,7 +173,6 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
   }
 
   Future<void> getFinalMatchs() async {
-    setLoading(true);
     var result = await _getFinalMatchs();
 
     result.fold((l) {
@@ -181,8 +180,6 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     }, (r) {
       update(r);
     });
-
-    setLoading(false);
   }
 
   int defineKnockoutWinner(SoccerMatch match) {

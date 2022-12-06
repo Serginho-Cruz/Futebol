@@ -39,7 +39,7 @@ class _FinalsScreenState extends State<FinalsScreen> {
           store: matchStore,
           onLoading: (context) => const CircularProgressIndicator(),
           onState: (ctx, matchs) {
-            if (matchs.length >= 4) {
+            if (matchs.any((m) => m.type == SoccerMatchType.semifinals)) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -59,7 +59,8 @@ class _FinalsScreenState extends State<FinalsScreen> {
                             .first,
                         width: MediaQuery.of(context).size.width * 0.45,
                         function: (match) async {
-                          matchStore.updateFinals(match: match);
+                          await matchStore.updateFinals(match: match);
+                          matchStore.getFinalMatchs();
                         },
                       ),
                       _buildCard(
@@ -68,7 +69,8 @@ class _FinalsScreenState extends State<FinalsScreen> {
                             .last,
                         width: MediaQuery.of(context).size.width * 0.45,
                         function: (match) async {
-                          matchStore.updateFinals(match: match);
+                          await matchStore.updateFinals(match: match);
+                          matchStore.getFinalMatchs();
                         },
                       ),
                     ],

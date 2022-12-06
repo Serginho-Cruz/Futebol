@@ -25,7 +25,7 @@ class UpdateRound16UC implements IUpdateRound16 {
 
     if (number.isOdd) {
       if (number > 4) {
-        idMatch1 = 48 + 8 - ((number + 1) ~/ 2);
+        idMatch1 = number == 7 ? 54 : 48 + 8 - ((number + 1) ~/ 2);
         idMatch2 = 48 + 4 + ((number + 1) ~/ 2);
       } else {
         idMatch1 = 48 + ((number + 1) ~/ 2);
@@ -34,7 +34,7 @@ class UpdateRound16UC implements IUpdateRound16 {
     } else {
       if (number > 4) {
         idMatch1 = 48 + 4 + (number ~/ 2);
-        idMatch2 = 48 + 8 - (number ~/ 2);
+        idMatch2 = number == 8 ? 54 : 48 + 8 - (number ~/ 2);
       } else {
         idMatch1 = 48 + 4 - (number ~/ 2) + 1;
         idMatch2 = 48 + (number ~/ 2);
