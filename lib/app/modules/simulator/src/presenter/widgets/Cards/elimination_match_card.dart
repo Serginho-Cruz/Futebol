@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../../../domain/models/match_model.dart';
 import '../../controllers/match_store.dart';
 
+import '../../utils/colors.dart';
 import 'match_card_image.dart';
 import 'match_point.dart';
 
-enum FieldType {
-  extraTime,
-  penalty,
-}
+enum FieldType { normal, extraTime, penalty }
+
+enum Scores { score1, score2, extratime1, extratime2, penalty1, penalty2 }
 
 class EliminationMatchCard extends StatefulWidget {
   const EliminationMatchCard({
@@ -76,6 +76,9 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
           widget.match.penaltyScore2 = null;
 
           break;
+
+        case FieldType.normal:
+          break;
       }
     });
   }
@@ -98,145 +101,124 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
     bool enabled =
         widget.match.idSelection1 != 33 && widget.match.idSelection2 != 33;
 
-    return Container(
-      alignment: Alignment.center,
-      width: widget.width,
+    return Card(
+      elevation: 10.5,
+      color: MyColors.normalPurple,
       margin: const EdgeInsets.symmetric(vertical: 10.0),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0),
           bottomRight: Radius.circular(30.0),
         ),
-        color: Theme.of(context).colorScheme.surface,
+        side: BorderSide(color: MyColors.gray, width: 1.5),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: 35,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-              color: Color(0xFF730217),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30.0),
-                bottomRight: Radius.circular(30.0),
-              ),
-            ),
-            child: Text(
-              '${widget.match.date}/2022',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(widget.match.hour),
-          ),
-          Flexible(
-            fit: FlexFit.loose,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MatchCardImage(selection: widget.match.selection1),
-                MatchPoint(
-                  enabled: enabled,
-                  point: widget.match.score1?.toString(),
-                  onChanged: (str) {
-                    if (str.isNotEmpty) {
-                      widget.match.score1 = int.tryParse(str);
-
-                      if (widget.match.score2 != null) {
-                        widget.store.changeKnockoutScoreboard(
-                          match: widget.match,
-                          score1: widget.match.score1!,
-                          score2: widget.match.score2!,
-                        );
-
-                        if (widget.match.score1 == widget.match.score2) {
-                          _showField(FieldType.extraTime);
-                        } else {
-                          widget.updateNextFaseMatchs(widget.match);
-                          _hideField(FieldType.extraTime);
-                          _hideField(FieldType.penalty);
-                        }
-                      }
-                    } else {
-                      widget.match.score1 = null;
-                    }
-                  },
-                  onSubmit: () {
-                    focusNodes[1].requestFocus();
-                  },
-                  focus: focusNodes.first,
+      child: Container(
+        alignment: Alignment.center,
+        width: widget.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 35,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: MyColors.red,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  bottomRight: Radius.circular(30.0),
                 ),
-                MatchPoint(
-                  enabled: enabled,
-                  focus: focusNodes[1],
-                  onChanged: (str) {
-                    if (str.isNotEmpty) {
-                      widget.match.score2 = int.tryParse(str);
-                      if (widget.match.score1 != null) {
-                        widget.store.changeKnockoutScoreboard(
-                          match: widget.match,
-                          score1: widget.match.score1!,
-                          score2: widget.match.score2!,
-                        );
-
-                        if (widget.match.score1 == widget.match.score2) {
-                          _showField(FieldType.extraTime);
-                        } else {
-                          widget.updateNextFaseMatchs(widget.match);
-                          _hideField(FieldType.extraTime);
-                          _hideField(FieldType.penalty);
-                        }
-                      }
-                    } else {
-                      widget.match.score2 = null;
-                    }
-                  },
-                  onSubmit: () {
-                    if (widget.match.score1 == widget.match.score2) {
-                      focusNodes[2].requestFocus();
-                    } else {
-                      focusNodes[1].unfocus();
-                    }
-                  },
-                  point: widget.match.score2?.toString(),
+              ),
+              child: Text(
+                '${widget.match.date}/2022',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 20.0,
                 ),
-                MatchCardImage(selection: widget.match.selection2),
-              ],
-            ),
-          ),
-          _buildExtraTimeRow(
-            text: "Tempo Extra",
-            visible: _isExtraTimeVisible,
-            focus1: focusNodes[2],
-            focus2: focusNodes[3],
-            focus3: focusNodes[4],
-          ),
-          _buildPenaltyRow(
-            text: "Penaltys",
-            visible: _isPenaltyVisible,
-            focus1: focusNodes[4],
-            focus2: focusNodes[5],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: Text(
-              widget.match.local,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.amber,
-                fontSize: 16,
               ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(widget.match.hour),
+            ),
+            Flexible(
+              fit: FlexFit.loose,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MatchCardImage(selection: widget.match.selection1),
+                  MatchPoint(
+                    enabled: enabled,
+                    point: widget.match.score1?.toString(),
+                    onChanged: (str) {
+                      _onChanged(
+                        str: str,
+                        scoreType: Scores.score1,
+                        otherScore: widget.match.score2,
+                        typeField: FieldType.normal,
+                        fieldToShow: FieldType.extraTime,
+                        fieldsToHide: [FieldType.extraTime, FieldType.penalty],
+                      );
+                    },
+                    onSubmit: () {
+                      focusNodes[1].requestFocus();
+                    },
+                    focus: focusNodes.first,
+                  ),
+                  MatchPoint(
+                    enabled: enabled,
+                    focus: focusNodes[1],
+                    onChanged: (str) {
+                      _onChanged(
+                        str: str,
+                        scoreType: Scores.score2,
+                        otherScore: widget.match.score1,
+                        typeField: FieldType.normal,
+                        fieldToShow: FieldType.extraTime,
+                        fieldsToHide: [FieldType.extraTime, FieldType.penalty],
+                      );
+                    },
+                    onSubmit: () {
+                      if (widget.match.score1 == widget.match.score2) {
+                        focusNodes[2].requestFocus();
+                      } else {
+                        focusNodes[1].unfocus();
+                      }
+                    },
+                    point: widget.match.score2?.toString(),
+                  ),
+                  MatchCardImage(selection: widget.match.selection2),
+                ],
+              ),
+            ),
+            _buildExtraTimeRow(
+              text: "Tempo Extra",
+              visible: _isExtraTimeVisible,
+              focus1: focusNodes[2],
+              focus2: focusNodes[3],
+              focus3: focusNodes[4],
+            ),
+            _buildPenaltyRow(
+              text: "Penaltys",
+              visible: _isPenaltyVisible,
+              focus1: focusNodes[4],
+              focus2: focusNodes[5],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Text(
+                widget.match.local,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.amber,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -278,31 +260,14 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                   padding: const EdgeInsets.only(right: 5.0),
                   child: MatchPoint(
                     onChanged: (str) {
-                      if (str.isNotEmpty) {
-                        widget.match.extratimeScore1 = int.tryParse(str);
-
-                        if (widget.match.extratimeScore2 != null) {
-                          widget.store.changeKnockoutScoreboard(
-                            match: widget.match,
-                            score1: widget.match.score1!,
-                            score2: widget.match.score2!,
-                            extratimeScores: [
-                              widget.match.extratimeScore1!,
-                              widget.match.extratimeScore2!
-                            ],
-                          );
-
-                          if (widget.match.extratimeScore1 ==
-                              widget.match.extratimeScore2) {
-                            _showField(FieldType.penalty);
-                          } else {
-                            _hideField(FieldType.penalty);
-                            widget.updateNextFaseMatchs(widget.match);
-                          }
-                        }
-                      } else {
-                        widget.match.extratimeScore1 = null;
-                      }
+                      _onChanged(
+                        str: str,
+                        scoreType: Scores.extratime1,
+                        otherScore: widget.match.extratimeScore2,
+                        typeField: FieldType.extraTime,
+                        fieldToShow: FieldType.penalty,
+                        fieldsToHide: [FieldType.penalty],
+                      );
                     },
                     point: widget.match.extratimeScore1?.toString(),
                     focus: focus1,
@@ -315,31 +280,14 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                   padding: const EdgeInsets.only(left: 5.0),
                   child: MatchPoint(
                     onChanged: (str) {
-                      if (str.isNotEmpty) {
-                        widget.match.extratimeScore2 = int.tryParse(str);
-
-                        if (widget.match.extratimeScore1 != null) {
-                          widget.store.changeKnockoutScoreboard(
-                            match: widget.match,
-                            score1: widget.match.score1!,
-                            score2: widget.match.score2!,
-                            extratimeScores: [
-                              widget.match.extratimeScore1!,
-                              widget.match.extratimeScore2!
-                            ],
-                          );
-
-                          if (widget.match.extratimeScore1 ==
-                              widget.match.extratimeScore2) {
-                            _showField(FieldType.penalty);
-                          } else {
-                            _hideField(FieldType.penalty);
-                            widget.updateNextFaseMatchs(widget.match);
-                          }
-                        }
-                      } else {
-                        widget.match.extratimeScore2 = null;
-                      }
+                      _onChanged(
+                        str: str,
+                        scoreType: Scores.extratime2,
+                        otherScore: widget.match.extratimeScore1,
+                        typeField: FieldType.extraTime,
+                        fieldToShow: FieldType.penalty,
+                        fieldsToHide: [FieldType.penalty],
+                      );
                     },
                     point: widget.match.extratimeScore2?.toString(),
                     focus: focus2,
@@ -389,33 +337,12 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                   padding: const EdgeInsets.only(right: 5.0),
                   child: MatchPoint(
                     onChanged: (str) {
-                      if (str.isNotEmpty) {
-                        widget.match.penaltyScore1 = int.tryParse(str);
-
-                        if (widget.match.penaltyScore2 != null) {
-                          widget.store.changeKnockoutScoreboard(
-                              match: widget.match,
-                              score1: widget.match.score1!,
-                              score2: widget.match.score2!,
-                              extratimeScores: [
-                                widget.match.extratimeScore1!,
-                                widget.match.extratimeScore2!
-                              ],
-                              penaltyScores: [
-                                widget.match.penaltyScore1!,
-                                widget.match.penaltyScore2!
-                              ]);
-
-                          if (widget.match.penaltyScore1 ==
-                              widget.match.penaltyScore2) {
-                            setState(() => _error = true);
-                          } else {
-                            widget.updateNextFaseMatchs(widget.match);
-                          }
-                        }
-                      } else {
-                        widget.match.penaltyScore1 = null;
-                      }
+                      _onChanged(
+                        str: str,
+                        scoreType: Scores.penalty1,
+                        otherScore: widget.match.penaltyScore2,
+                        typeField: FieldType.penalty,
+                      );
                     },
                     point: widget.match.penaltyScore1?.toString(),
                     focus: focus1,
@@ -428,34 +355,12 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
                   padding: const EdgeInsets.only(left: 5.0),
                   child: MatchPoint(
                     onChanged: (str) {
-                      if (str.isNotEmpty) {
-                        widget.match.penaltyScore2 = int.tryParse(str);
-
-                        if (widget.match.penaltyScore1 != null) {
-                          widget.store.changeKnockoutScoreboard(
-                              match: widget.match,
-                              score1: widget.match.score1!,
-                              score2: widget.match.score2!,
-                              extratimeScores: [
-                                widget.match.extratimeScore1!,
-                                widget.match.extratimeScore2!
-                              ],
-                              penaltyScores: [
-                                widget.match.penaltyScore1!,
-                                widget.match.penaltyScore2!
-                              ]);
-
-                          if (widget.match.penaltyScore1 ==
-                              widget.match.penaltyScore2) {
-                            setState(() => _error = true);
-                          } else {
-                            setState(() => _error = false);
-                            widget.updateNextFaseMatchs(widget.match);
-                          }
-                        }
-                      } else {
-                        widget.match.penaltyScore2 = null;
-                      }
+                      _onChanged(
+                        str: str,
+                        scoreType: Scores.penalty2,
+                        otherScore: widget.match.penaltyScore1,
+                        typeField: FieldType.penalty,
+                      );
                     },
                     point: widget.match.penaltyScore2?.toString(),
                     focus: focus2,
@@ -485,5 +390,85 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
         ),
       ),
     );
+  }
+
+  void _onChanged({
+    required String str,
+    required Scores scoreType,
+    required int? otherScore,
+    required FieldType typeField,
+    List<FieldType> fieldsToHide = const [],
+    FieldType? fieldToShow,
+  }) {
+    final updateScore = <Scores, int? Function(bool)>{
+      Scores.score1: (bool assignNull) =>
+          widget.match.score1 = assignNull ? null : int.tryParse(str),
+      Scores.score2: (bool assignNull) =>
+          widget.match.score2 = assignNull ? null : int.tryParse(str),
+      Scores.extratime1: (bool assignNull) =>
+          widget.match.extratimeScore1 = assignNull ? null : int.tryParse(str),
+      Scores.extratime2: (bool assignNull) =>
+          widget.match.extratimeScore2 = assignNull ? null : int.tryParse(str),
+      Scores.penalty1: (bool assignNull) =>
+          widget.match.penaltyScore1 = assignNull ? null : int.tryParse(str),
+      Scores.penalty2: (bool assignNull) =>
+          widget.match.penaltyScore2 = assignNull ? null : int.tryParse(str)
+    };
+    if (str.isNotEmpty) {
+      int? number = updateScore[scoreType]!(false);
+      if (otherScore != null) {
+        switch (typeField) {
+          case FieldType.normal:
+            widget.store.changeKnockoutScoreboard(
+              match: widget.match,
+              score1: widget.match.score1!,
+              score2: widget.match.score2!,
+            );
+            break;
+          case FieldType.extraTime:
+            widget.store.changeKnockoutScoreboard(
+              match: widget.match,
+              score1: widget.match.score1!,
+              score2: widget.match.score2!,
+              extratimeScores: [
+                widget.match.extratimeScore1!,
+                widget.match.extratimeScore2!
+              ],
+            );
+            break;
+          case FieldType.penalty:
+            widget.store.changeKnockoutScoreboard(
+              match: widget.match,
+              score1: widget.match.score1!,
+              score2: widget.match.score2!,
+              extratimeScores: [
+                widget.match.extratimeScore1!,
+                widget.match.extratimeScore2!
+              ],
+              penaltyScores: [
+                widget.match.penaltyScore1!,
+                widget.match.penaltyScore2!,
+              ],
+            );
+        }
+        if (number == otherScore) {
+          fieldToShow != null
+              ? _showField(fieldToShow)
+              : setState(() => _error = true);
+        } else {
+          widget.updateNextFaseMatchs(widget.match);
+
+          if (fieldToShow == null) {
+            setState(() => _error = false);
+          }
+
+          for (var field in fieldsToHide) {
+            _hideField(field);
+          }
+        }
+      }
+    } else {
+      updateScore[scoreType]!(true);
+    }
   }
 }

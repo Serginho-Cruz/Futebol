@@ -1,10 +1,8 @@
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import '../../domain/usecases/Match/update_finals_interface.dart';
 import '../../domain/usecases/Match/update_semifinals_interface.dart';
 import '../../domain/usecases/Match/get_final_matchs_interface.dart';
 import '../../domain/usecases/Match/update_quarters_interface.dart';
-import 'selection_store.dart';
 
 import '../../domain/entities/Match/match_entity.dart';
 import '../../domain/entities/Selection/selection_entity.dart';

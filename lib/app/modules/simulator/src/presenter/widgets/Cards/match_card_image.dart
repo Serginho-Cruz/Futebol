@@ -14,10 +14,11 @@ class MatchCardImage extends StatelessWidget {
       width: 44.5,
       height: 54.5,
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.white, width: 0.6),
         shape: BoxShape.circle,
         image: DecorationImage(
           fit: BoxFit.fill,
-          image: AssetImage('images/flags/${_selection.bandeira}.png'),
+          image: AssetImage('assets/images/flags/${_selection.bandeira}.png'),
         ),
       ),
     );

@@ -30,6 +30,7 @@ dev_dependencies:
 
 flutter:
   assets: 
-    - images/flags/
-
+    - assets/
   uses-material-design: true
+
+

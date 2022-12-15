@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/colors.dart';
 import 'selection_data.dart';
 import 'table_index.dart';
 
@@ -51,7 +52,7 @@ class GroupTable extends StatelessWidget {
                       topLeft: Radius.circular(20.0),
                       topRight: Radius.circular(20.0),
                     ),
-                    color: Color.fromRGBO(115, 2, 23, 1),
+                    color: MyColors.red,
                   ),
                   height: 40.0,
                   child: Center(
@@ -112,8 +113,10 @@ TableRow _generateLastRow(Selecao selection) {
             height: 60.0,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 0.6),
               image: DecorationImage(
-                image: AssetImage('images/flags/${selection.bandeira}.png'),
+                image:
+                    AssetImage('assets/images/flags/${selection.bandeira}.png'),
                 fit: BoxFit.fill,
               ),
             ),
@@ -136,11 +139,11 @@ TableRow _generateLastRow(Selecao selection) {
 }
 
 TableRow _generateIndexRow(BuildContext context) {
-  return TableRow(
+  return const TableRow(
     decoration: BoxDecoration(
-      color: Theme.of(context).colorScheme.secondary,
+      color: MyColors.lightPurple,
     ),
-    children: const [
+    children: [
       TableIndex(text: 'Times'),
       TableIndex(text: 'P'),
       TableIndex(text: 'V'),
@@ -165,8 +168,11 @@ TableRow _generateRow(Selecao selection, double width) {
             height: 60.0,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
+              border: Border.all(color: Colors.white, width: 0.6),
               image: DecorationImage(
-                image: AssetImage('images/flags/${selection.bandeira}.png'),
+                image: AssetImage(
+                  'assets/images/flags/${selection.bandeira}.png',
+                ),
                 fit: BoxFit.fill,
               ),
             ),

@@ -52,7 +52,7 @@ Future<void> populateSelectionTableScript(Database db) async {
           ) VALUES (?, ?, ?, ?, ?, ?, ?)
         ''';
 
-  selections.forEach((raw) async {
+  for (var raw in selections) {
     await db.rawInsert(sql, [
       raw[SelectionTableSchema.nameColumn],
       raw[SelectionTableSchema.flagColumn],
@@ -62,7 +62,7 @@ Future<void> populateSelectionTableScript(Database db) async {
       0,
       0,
     ]);
-  });
+  }
 }
 
 Future<void> populateMatchTableScript(Database db) async {

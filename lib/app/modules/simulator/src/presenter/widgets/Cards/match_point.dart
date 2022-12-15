@@ -8,7 +8,6 @@ class MatchPoint extends StatefulWidget {
     required this.point,
     required this.focus,
     required this.onSubmit,
-    this.validate = false,
     this.enabled = true,
   });
 
@@ -17,7 +16,6 @@ class MatchPoint extends StatefulWidget {
   final FocusNode focus;
   final void Function() onSubmit;
   final bool enabled;
-  final bool validate;
 
   @override
   State<MatchPoint> createState() => _MatchPointState();
