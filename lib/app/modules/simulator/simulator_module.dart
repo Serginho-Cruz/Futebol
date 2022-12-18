@@ -1,5 +1,6 @@
 import 'package:flutter_modular/flutter_modular.dart';
 import 'src/data/usecases/Match/get_final_matchs_impl.dart';
+import 'src/data/usecases/Match/restart_impl.dart';
 import 'src/data/usecases/Match/update_finals_impl.dart';
 import 'src/data/usecases/Match/update_semifinals_impl.dart';
 import 'src/data/usecases/Match/update_quarters_impl.dart';
@@ -24,6 +25,7 @@ import 'src/presenter/screens/finals_screen.dart';
 import 'src/external/datasources/sqlite/sqlite_datasource.dart';
 import 'src/infra/repositories/match_repository_impl.dart';
 import 'src/infra/repositories/selection_repository_impl.dart';
+import 'src/presenter/screens/splash_screen.dart';
 
 class SimulatorModule extends Module {
   @override
@@ -44,6 +46,7 @@ class SimulatorModule extends Module {
     Bind.lazySingleton((i) => UpdateSemifinalsUC(i())),
     Bind.lazySingleton((i) => UpdateFinalsUC(i())),
     Bind.lazySingleton((i) => GetFinalMatchsUC(i())),
+    Bind.lazySingleton((i) => RestartUC(i())),
     Bind.singleton(
       (i) => SelectionStore(
         getAll: i(),
@@ -62,13 +65,15 @@ class SimulatorModule extends Module {
         updateQuarterMatchs: i(),
         updateSemifinals: i(),
         updateFinals: i(),
+        restart: i(),
       ),
     ),
   ];
 
   @override
   final List<ModularRoute> routes = [
-    ChildRoute('/', child: (context, args) => const HomeScreen()),
+    ChildRoute('/', child: (ctx, args) => const SplashScreen()),
+    ChildRoute('/home', child: (context, args) => const HomeScreen()),
     ChildRoute(
       '/group',
       child: (context, args) => GroupScreen(group: args.data.toString()),

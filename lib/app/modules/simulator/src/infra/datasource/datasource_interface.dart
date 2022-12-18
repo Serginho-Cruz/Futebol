@@ -26,4 +26,5 @@ abstract class IDataSource {
     required bool isId1,
   });
   Future<List<SoccerMatch>> getFinalMatchs();
+  Future<void> restart();
 }

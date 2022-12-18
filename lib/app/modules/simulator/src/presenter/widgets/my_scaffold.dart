@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:futebol/app/modules/simulator/src/presenter/controllers/match_store.dart';
+
+import '../utils/colors.dart';
 
 class MyScaffold extends StatefulWidget {
   MyScaffold({super.key, required this.body});
@@ -15,66 +18,34 @@ class _MyScaffoldState extends State<MyScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: Drawer(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: MyColors.normalPurple,
         elevation: 10.0,
         width: MediaQuery.of(context).size.width * 0.4,
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ListTile(
-                hoverColor: Colors.white,
+              Column(
+                children: [
+                  _createTile(
+                    route: '/home',
+                    tileTitle: 'Home',
+                    padding: const EdgeInsets.only(top: 14.0),
+                  ),
+                  _createTile(route: '/round16', tileTitle: 'Oitavas'),
+                  _createTile(route: '/quarters', tileTitle: 'Quartas'),
+                  _createTile(route: '/finals', tileTitle: 'Finais'),
+                ],
+              ),
+              _createTile(
+                route: '/',
+                tileTitle: 'Restart',
+                padding: const EdgeInsets.only(bottom: 15.0),
                 onTap: () {
+                  Modular.get<MatchStore>().restart();
                   _navigateTo('/');
                 },
-                horizontalTitleGap: 0.0,
-                contentPadding: const EdgeInsets.only(top: 12.0),
-                title: const Text(
-                  "Home",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
               ),
-              ListTile(
-                hoverColor: Colors.white,
-                onTap: () {
-                  _navigateTo('/round16');
-                },
-                title: const Text(
-                  "Oitavas",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              ListTile(
-                hoverColor: Colors.white,
-                onTap: () {
-                  _navigateTo('/quarters');
-                },
-                title: const Text(
-                  "Quartas",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
-              ),
-              ListTile(
-                hoverColor: Colors.white,
-                onTap: () {
-                  _navigateTo('/finals');
-                },
-                title: const Text(
-                  "Finais",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                  ),
-                ),
-              )
             ],
           ),
         ),
@@ -92,7 +63,7 @@ class _MyScaffoldState extends State<MyScaffold> {
           ),
         ],
         title: const Text(
-          'Simulador',
+          'Simulador 2022',
         ),
       ),
       body: widget.body,
@@ -102,5 +73,29 @@ class _MyScaffoldState extends State<MyScaffold> {
   void _navigateTo(String route) {
     Navigator.popUntil(context, (route) => !Navigator.canPop(context));
     Modular.to.pushReplacementNamed(route);
+  }
+
+  ListTile _createTile({
+    required String route,
+    required String tileTitle,
+    EdgeInsetsGeometry padding = EdgeInsets.zero,
+    void Function()? onTap,
+  }) {
+    return ListTile(
+      hoverColor: Colors.white,
+      title: Text(
+        tileTitle,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 20,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w400,
+          letterSpacing: 1.1,
+        ),
+      ),
+      contentPadding: padding,
+      onTap: onTap ?? () => _navigateTo(route),
+    );
   }
 }

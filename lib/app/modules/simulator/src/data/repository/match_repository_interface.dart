@@ -21,4 +21,5 @@ abstract class IMatchRepository {
     required bool isId1,
   });
   Future<Either<Failure, List<SoccerMatch>>> getFinalMatchs();
+  Future<Either<Failure, void>> restart();
 }

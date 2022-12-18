@@ -58,8 +58,8 @@ class GroupTable extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Grupo $group',
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      style: const TextStyle(
+                        color: Colors.white,
                         fontSize: 22.0,
                         fontWeight: FontWeight.bold,
                       ),

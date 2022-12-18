@@ -9,7 +9,6 @@ import 'app/app_widget.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
   if (Platform.isAndroid) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
@@ -22,5 +21,10 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(ModularApp(module: AppModule(), child: const AppWidget()));
+
+  runApp(ModularApp(
+    module: AppModule(),
+    debugMode: false,
+    child: const AppWidget(),
+  ));
 }

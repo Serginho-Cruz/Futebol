@@ -124,4 +124,16 @@ class MatchRepository implements IMatchRepository {
       return Left(DataSourceError(Messages.genericError));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> restart() async {
+    try {
+      var result = await datasource.restart();
+      return Right(result);
+    } on DataSourceError catch (e) {
+      return Left(e);
+    } catch (e) {
+      return Left(DataSourceError(Messages.genericError));
+    }
+  }
 }

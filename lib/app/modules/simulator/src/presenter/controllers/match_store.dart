@@ -1,4 +1,5 @@
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:futebol/app/modules/simulator/src/domain/usecases/Match/restart_interface.dart';
 import '../../domain/usecases/Match/update_finals_interface.dart';
 import '../../domain/usecases/Match/update_semifinals_interface.dart';
 import '../../domain/usecases/Match/get_final_matchs_interface.dart';
@@ -23,6 +24,7 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
   late final IUpdateSemifinals _updateSemifinals;
   late final IUpdateFinals _updateFinals;
   late final IGetFinalMatchs _getFinalMatchs;
+  late final IRestart _restart;
   MatchStore({
     required IGetMatchsByType getByType,
     required IGetMatchsByGroup getByGroup,
@@ -33,6 +35,7 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     required IUpdateSemifinals updateSemifinals,
     required IUpdateFinals updateFinals,
     required IGetFinalMatchs getFinalMatchs,
+    required IRestart restart,
   }) : super([]) {
     _getByType = getByType;
     _getByGroup = getByGroup;
@@ -43,6 +46,7 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     _updateSemifinals = updateSemifinals;
     _updateFinals = updateFinals;
     _getFinalMatchs = getFinalMatchs;
+    _restart = restart;
   }
 
   Future<void> getMatchsByType(int type) async {
@@ -131,7 +135,7 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
   Future<void> updateQuarters({
     required SoccerMatch match,
   }) async {
-    int winnerId = defineKnockoutWinner(match);
+    int winnerId = defineKnockoutWinner(match)!;
 
     var result = await _updateQuarterMatchs(
       matchId: match.id,
@@ -144,7 +148,7 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
   }
 
   Future<void> updateSemifinals({required SoccerMatch match}) async {
-    int winnerId = defineKnockoutWinner(match);
+    int winnerId = defineKnockoutWinner(match)!;
 
     var result = await _updateSemifinals(matchId: match.id, winnerId: winnerId);
 
@@ -154,7 +158,7 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
   }
 
   Future<void> updateFinals({required SoccerMatch match}) async {
-    int winnerId = defineKnockoutWinner(match);
+    int winnerId = defineKnockoutWinner(match)!;
     int loserId = winnerId == match.idSelection1
         ? match.idSelection2
         : match.idSelection1;
@@ -180,7 +184,22 @@ class MatchStore extends NotifierStore<Failure, List<SoccerMatch>> {
     });
   }
 
-  int defineKnockoutWinner(SoccerMatch match) {
+  Future<void> restart() async {
+    setLoading(true);
+
+    var result = await _restart();
+
+    result.fold((l) {
+      setError(l);
+    }, (r) {});
+
+    setLoading(false);
+  }
+
+  int? defineKnockoutWinner(SoccerMatch match) {
+    if (match.score1 == null || match.score2 == null) {
+      return null;
+    }
     int result = match.score1!.compareTo(match.score2!);
     if (result > 0) {
       return match.idSelection1;

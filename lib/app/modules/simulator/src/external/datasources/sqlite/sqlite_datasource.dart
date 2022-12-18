@@ -288,4 +288,36 @@ class SQLitedatasource implements IDataSource {
     matchs.addAll(map.map((e) => MatchMapper.fromMap(e)).toList());
     return matchs;
   }
+
+  @override
+  Future<void> restart() async {
+    var db = await SQLite.instance.database;
+
+    await db.transaction((txn) async {
+      await txn.update(MatchTableSchema.nameTable, {
+        MatchTableSchema.score1Column: null,
+        MatchTableSchema.score2Column: null,
+        MatchTableSchema.extraTimeScore1Column: null,
+        MatchTableSchema.extraTimeScore2Column: null,
+        MatchTableSchema.penaltys1Column: null,
+        MatchTableSchema.penaltys2Column: null,
+      });
+
+      await txn.update(
+        MatchTableSchema.nameTable,
+        {
+          MatchTableSchema.idSelection1Column: 33,
+          MatchTableSchema.idSelection2Column: 33,
+        },
+        where: '${MatchTableSchema.typeColumn} != ${SoccerMatchType.group}',
+      );
+
+      await txn.update(SelectionTableSchema.nameTable, {
+        SelectionTableSchema.pointsColumn: 0,
+        SelectionTableSchema.victoriesColumn: 0,
+        SelectionTableSchema.gpColumn: 0,
+        SelectionTableSchema.gcColumn: 0,
+      });
+    });
+  }
 }

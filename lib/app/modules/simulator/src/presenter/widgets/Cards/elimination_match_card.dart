@@ -102,7 +102,7 @@ class _EliminationMatchCardState extends State<EliminationMatchCard> {
         widget.match.idSelection1 != 33 && widget.match.idSelection2 != 33;
 
     return Card(
-      elevation: 10.5,
+      elevation: 12,
       color: MyColors.normalPurple,
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       shape: const RoundedRectangleBorder(
