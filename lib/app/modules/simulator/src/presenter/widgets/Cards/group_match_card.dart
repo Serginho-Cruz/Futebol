@@ -4,6 +4,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import '../../../domain/models/match_model.dart';
 import '../../controllers/match_store.dart';
 import '../../controllers/selection_store.dart';
+import '../../utils/colors.dart';
 import 'match_card_image.dart';
 import 'match_point.dart';
 
@@ -31,7 +32,7 @@ class GroupMatchCard extends StatelessWidget {
     return Card(
       borderOnForeground: true,
       elevation: 10.0,
-      color: Theme.of(context).colorScheme.surface,
+      color: MyColors.normalPurple,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0),
@@ -97,7 +98,9 @@ class GroupMatchCard extends StatelessWidget {
             match.local,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 15.0,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w400,
+              fontSize: 12.5,
             ),
           )
         ],
